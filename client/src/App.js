@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
@@ -14,8 +13,8 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <p>{!data ? "Loading..." : data}</p>
-                <h1 className="text-3xl font-bold underline">Hello world!</h1>
+                <p>{!data ? "not connected to server!" : data}</p>
+                <h1 className="text-3xl font-bold underline">if this  is underlined then TailwindCSS works. </h1>
             </header>
         </div>
     );
