@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import logo from "./logo.svg";
+
 
 function App() {
     const [data, setData] = useState(null);
@@ -8,19 +8,18 @@ function App() {
     useEffect(() => {
         fetch("/api")
             .then((res) => res.json())
-            .then(console.log("data: ", data))
-
             .then((data) => setData(data.message));
-    }, []);
+    }, []);  
 
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
                 <p>{!data ? "Loading..." : data}</p>
+                <div className="text-3xl font-bold underline">something</div>
             </header>
         </div>
     );
 }
 
 export default App;
+

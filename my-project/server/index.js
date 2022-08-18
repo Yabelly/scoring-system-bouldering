@@ -8,8 +8,8 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.get("/api", (req, res) => {
-    console.log("some sufkcing shit: ");
-    res.json({ message: "Hello from server!" });
+    console.log("GET /api");
+    res.json({ message: "server working" });
 });
 
 app.listen(PORT, () => {
