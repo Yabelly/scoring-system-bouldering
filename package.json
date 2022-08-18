@@ -1,0 +1,23 @@
+{
+    "name": "competition-scoring",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Yabelly/scoring-system-bouldering.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Yabelly/scoring-system-bouldering/issues"
+    },
+    "homepage": "https://github.com/Yabelly/scoring-system-bouldering#readme",
+    "dependencies": {
+        "express": "^4.18.1"
+    }
+}
