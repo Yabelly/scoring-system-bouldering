@@ -7,7 +7,13 @@ export default function Boulder() {
     const [boulderStatus, setBoulderStatus] = useState(0);
 
     function clicker() {
-        setBoulderStatus();
+        if (boulderStatus === 0) {
+            setBoulderStatus(1);
+        } else if (boulderStatus === 1) {
+            setBoulderStatus(2);
+        } else if (boulderStatus === 2) {
+            setBoulderStatus(0);
+        }
     }
 
     if (boulderStatus === 0) {
@@ -19,13 +25,13 @@ export default function Boulder() {
     } else if (boulderStatus === 1) {
         return (
             <>
-                <div className="w-20 h-20 bg-lime-400"></div>
+                <div onClick={clicker} className="w-20 h-20 bg-lime-400"></div>
             </>
         );
     } else if (boulderStatus === 2) {
         return (
             <>
-                <div className="w-20 h-20 bg-sky-500"></div>
+                <div onClick={clicker} className="w-20 h-20 bg-sky-500"></div>
             </>
         );
     }
