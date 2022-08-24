@@ -23,10 +23,11 @@ export default function ScoringCard() {
     ]);
 
     function clickHandler(id) {
-        if (boulders.status === 0) {
-            setBoulders.status(1);
+        boulders[id].status++;
+        if (boulders[id].status > 2) {
+            boulders[id].status = 0;
         }
-        console.log("boulders: ", boulders);
+        setBoulders([...boulders]);
     }
 
     return (
