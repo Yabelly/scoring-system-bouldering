@@ -1,5 +1,5 @@
 import "./App.css";
-import ScoringCard from "./scoring-card";
+import ScoringCard from "./components/scoring-card";
 
 function App() {
     return (

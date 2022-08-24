@@ -10,7 +10,7 @@ export default function Boulder() {
         if (boulderStatus === 0) {
             setBoulderStatus(1);
         } else if (boulderStatus === 1) {
-            setBoulderStatus(2);
+            setBoulderStatus(2  );
         } else if (boulderStatus === 2) {
             setBoulderStatus(0);
         }
