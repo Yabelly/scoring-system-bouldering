@@ -1,4 +1,3 @@
-import "./App.css";
 import ScoringCard from "./components/scoring-card";
 
 function App() {

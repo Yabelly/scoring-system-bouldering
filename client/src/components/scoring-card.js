@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import Boulder from "./boulder";
 import SingleBoulder from "./boulder2";
 
 export default function ScoringCard() {
