@@ -1,9 +1,11 @@
-import ScoringCard from "./components/scoring-card";
+// import ScoringCard from "./components/scoring-card";
+import CreateUser from "./components/createuser";
 
 function App() {
     return (
         <div className="App">
-            <ScoringCard></ScoringCard>
+            <CreateUser></CreateUser>
+            {/* <ScoringCard></ScoringCard> */}
         </div>
     );
 }
