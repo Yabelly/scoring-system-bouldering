@@ -1,7 +1,7 @@
 const spicedPg = require("spiced-pg");
 const db = spicedPg(
     process.env.DATABASE_URL ||
-        `postgres:postgres:postgres@localhost:5432/competitionclimbing`
+        `postgres:postgres:postgres@localhost:5432/scoringdatabase`
 );
 
 module.exports.newUser = (username) => {
@@ -9,9 +9,8 @@ module.exports.newUser = (username) => {
         `
     INSERT INTO superuser (username)
     VALUES ($1)
-    RETURNING users.id, users.username
+    RETURNING superuser.id, superuser.username
     `,
         [username]
     );
 };
-

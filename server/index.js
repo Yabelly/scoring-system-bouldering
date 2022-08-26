@@ -18,7 +18,6 @@ app.post("/api/newuser", async (req, res) => {
         res.json(rows[0]); //username
     } catch (err) {
         console.log("err: ", err);
-
         res.json({ success: false });
     }
 });
