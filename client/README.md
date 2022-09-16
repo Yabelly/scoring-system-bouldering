@@ -5,3 +5,12 @@ super-user option - For a single computer in the gym that all boulderers can use
 
 
 online option - This version will be for personal use with mobile phone, registration and login will be necessary
+
+.
+.
+.
+.
+.
+next step;
+-NewComp component: name, amount of boulders qualification, format
+-new table for competition

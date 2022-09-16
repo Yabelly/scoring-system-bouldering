@@ -32,6 +32,11 @@ export default function CreateUser() {
                 placeholder="username"
                 onChange={(e) => inputName(e)}
             ></input>
+            <input
+            name='competitionformat'
+            >
+            
+            </input>
             <button
                 onClick={(e) => {
                     submitUserName(e);
