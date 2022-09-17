@@ -3,10 +3,6 @@ import { useState } from "react";
 export default function CreateUser() {
     const [userName, setUserName] = useState("");
 
-    function inputName({ target }) {
-        setUserName(target.value);
-    }
-
     function submitUserName(e) {
         e.preventDefault();
         fetch("/api/newuser", {
@@ -25,25 +21,23 @@ export default function CreateUser() {
     }
 
     return (
-        <form>
-            <input
-                name="username"
-                type="text"
-                placeholder="username"
-                onChange={(e) => inputName(e)}
-            ></input>
-            <input
-            name='competitionformat'
-            >
-            
-            </input>
-            <button
-                onClick={(e) => {
-                    submitUserName(e);
-                }}
-            >
-                Register
-            </button>
-        </form>
+        <>
+            <form className="bg-blue-200">
+                <input
+                    name="username"
+                    type="text"
+                    placeholder="username"
+                    onChange={(e) => setUserName(e.target.value)}
+                ></input>
+
+                <button
+                    onClick={(e) => {
+                        submitUserName(e);
+                    }}
+                >
+                    Register
+                </button>
+            </form>
+        </>
     );
 }

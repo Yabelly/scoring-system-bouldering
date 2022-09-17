@@ -2,8 +2,8 @@ import { useState } from "react";
 export default function CreateComp() {
     const [compName, setCompName] = useState("");
     const [boulderAmount, setBoulderAmount] = useState(3);
-    const compFormat = "classic"
-    // replace with state when v1 is done 
+    const compFormat = "classic";
+    // replace with state when v1 is done
     // const [compFormat, setCompFormat] = useState("classic");
 
     function submitComp(e) {
@@ -31,32 +31,30 @@ export default function CreateComp() {
     }
 
     return (
-        <>
-            <form>
-                <label>name of the competition:</label>
-                <input
-                    name="compname"
-                    type="text"
-                    placeholder={compName}
-                    onChange={(e) => setCompName(e.target.value)}
-                ></input>
-                <label>amount of qualification boulders (3-100)</label>
-                <input
-                    type="number"
-                    name="bouldersamount"
-                    min="3"
-                    max="100"
-                    onChange={(e) => setBoulderAmount(e.target.value)}
-                ></input>
+        <form className="bg-orange-300">
+            <label>name of the competition:</label>
+            <input
+                name="compname"
+                type="text"
+                placeholder={compName}
+                onChange={(e) => setCompName(e.target.value)}
+            ></input>
+            <label>amount of qualification boulders (3-100)</label>
+            <input
+                type="number"
+                name="bouldersamount"
+                min="3"
+                max="100"
+                onChange={(e) => setBoulderAmount(e.target.value)}
+            ></input>
 
-                <button
-                    onClick={(e) => {
-                        submitComp(e);
-                    }}
-                >
-                    create competition
-                </button>
-            </form>
-        </>
+            <button
+                onClick={(e) => {
+                    submitComp(e);
+                }}
+            >
+                create competition
+            </button>
+        </form>
     );
 }
