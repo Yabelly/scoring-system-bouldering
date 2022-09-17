@@ -31,7 +31,7 @@ export default function CreateComp() {
     }
 
     return (
-        <form className="bg-orange-300">
+        <form className="bg-orange-300 flex flex-col justify-center items-center">
             <label>name of the competition:</label>
             <input
                 name="compname"

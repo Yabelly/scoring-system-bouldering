@@ -11,7 +11,7 @@ function App() {
     return (
         <div className="App  h-screen bg-gradient-to-b from-green-200 to-green-500">
             <nav className="w-full h-1/6 w-full bg-red-300 flex justify-evenly">
-                <Link to="/">welome</Link>
+                <Link to="/">welcome</Link>
                 <Link to="createcomp">create a competition</Link>
                 <Link to="createuser">joining a competition</Link>
             </nav>

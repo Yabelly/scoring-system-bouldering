@@ -22,7 +22,7 @@ export default function CreateUser() {
 
     return (
         <>
-            <form className="bg-blue-200">
+            <form className="bg-blue-200 flex flex-col justify-center items-center">
                 <input
                     name="username"
                     type="text"
