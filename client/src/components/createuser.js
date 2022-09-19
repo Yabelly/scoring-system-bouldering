@@ -1,15 +1,12 @@
+// This component is made to add new users to a competition.
+
 import { useState, useEffect } from "react";
 
 export default function CreateUser() {
-    // This component is made to add new users to a competition.
-
     const [competitions, setCompetitions] = useState([]);
-    const [userName, setUserName] = useState("");
-    const [selectedComp, setSelectedComp] = useState("");
     const [error, setError] = useState(false);
-
-    // !! figure out how to get the value to setSeletedComp
-    console.log("selectedComp: ", selectedComp);
+    const [userName, SetUserName] = useState("");
+    const [chosenCompetitionId, setChosenCompetitionId] = useState("");
 
     // GET API to retrieve all open competitions
     useEffect(() => {
@@ -18,9 +15,8 @@ export default function CreateUser() {
             .then((data) => {
                 if (data.success === false) {
                     setError(true);
+                    console.log("error: ", error);
                 } else {
-                    console.log("data: ", data);
-
                     setError(false);
                     setCompetitions(data);
                 }
@@ -28,7 +24,6 @@ export default function CreateUser() {
     }, []);
 
     // POST API posting the new user to the database
-    // !! Change this function so it adds the ID of the comp to the user
     function submitUserName(e) {
         e.preventDefault();
         fetch("/api/newuser", {
@@ -36,7 +31,7 @@ export default function CreateUser() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ userName }),
+            body: JSON.stringify({ userName, chosenCompetitionId }),
         })
             .then((resp) => resp.json())
             .then((data) => {
@@ -48,24 +43,26 @@ export default function CreateUser() {
 
     return (
         <>
-            <form className="bg-blue-200 flex flex-col justify-center items-center">
+            <div className="bg-blue-200 flex flex-col justify-center items-center">
+                <p>choose you competition</p>
+                <div className="grid grid-cols-3  bg-green-300">
+                    {competitions.map((comp) => (
+                        <button
+                            className="border-solid border-2 border-black m-2.5 "
+                            key={comp.id}
+                            onClick={() => setChosenCompetitionId(comp.id)}
+                        >
+                            {comp.compname}
+                        </button>
+                    ))}
+                </div>
+                <p className="underline">enter your username</p>
                 <input
                     name="username"
                     type="text"
                     placeholder="username"
-                    onChange={(e) => setUserName(e.target.value)}
+                    onChange={(e) => SetUserName(e.target.value)}
                 ></input>
-                <label>which competition are you joining?</label>
-                <select>
-                    {competitions.map((comp, idx) => (
-                        <option
-                            key={idx}
-                            onChange={(e) => setSelectedComp(e.target.value)}
-                        >
-                            {comp.compname}
-                        </option>
-                    ))}
-                </select>
 
                 <button
                     onClick={(e) => {
@@ -74,7 +71,7 @@ export default function CreateUser() {
                 >
                     Register
                 </button>
-            </form>
+            </div>
         </>
     );
 }
