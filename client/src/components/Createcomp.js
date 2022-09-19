@@ -1,11 +1,14 @@
+// This component creates new competitions
+
 import { useState } from "react";
 export default function CreateComp() {
     const [compName, setCompName] = useState("");
     const [boulderAmount, setBoulderAmount] = useState(3);
     const compFormat = "classic";
-    // replace with state when v1 is done
+    // !! replace with state when v1 is done: so i can add different formats for competing
     // const [compFormat, setCompFormat] = useState("classic");
 
+// POST API adding new competition
     function submitComp(e) {
         e.preventDefault();
         console.log(

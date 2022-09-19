@@ -7,18 +7,18 @@ const db = spicedPg(
 module.exports.newUser = (username, emtyScoreCard) => {
     return db.query(
         `
-    INSERT INTO superuser (username, scoring)
+    INSERT INTO competitor (username, scoring)
     VALUES ($1, $2)
-    RETURNING superuser.id, superuser.username, superuser.scoring
+    RETURNING competitor.id, competitor.username, competitor.scoring
     `,
         [username, emtyScoreCard]
     );
 };
 
-module.exports.returnAllSuperUser = () => {
+module.exports.returnAllCompetitors = () => {
     return db.query(
         `
-    SELECT * FROM superuser
+    SELECT * FROM competitor
     `
     );
 };
@@ -26,7 +26,7 @@ module.exports.returnAllSuperUser = () => {
 module.exports.newComp = (compName, boulderAmount, compFormat) => {
     return db.query(
         `
-    INSERT INTO competitions(compname, boulderamount, compformat)
+    INSERT INTO competition(compname, boulderamount, compformat)
     VALUES($1, $2, $3)
     RETURNING *
         `,
@@ -34,9 +34,10 @@ module.exports.newComp = (compName, boulderAmount, compFormat) => {
     );
 };
 
-module.exports.getComp = () => {
+module.exports.currentComps = () => {
     return db.query(
         `
-        SELECT * FROM competitions`
+    SELECT * FROM competitions
+    `
     );
 };

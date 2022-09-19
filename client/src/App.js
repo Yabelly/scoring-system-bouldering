@@ -2,7 +2,7 @@
 // import Userslist from "./components/userslist";
 
 import CreateComp from "./components/Createcomp";
-import CreateUser from "./components/createuser";
+import CreateUser from "./components/Createuser";
 import Welcome from "./components/Welcome";
 
 import { Routes, Route, Link } from "react-router-dom";

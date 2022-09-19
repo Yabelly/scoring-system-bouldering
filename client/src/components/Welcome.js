@@ -1,3 +1,5 @@
+// General welcome component. This will eventually whos some goal explanation of the app. 
+
 export default function Welcome() {
     return (
         <>

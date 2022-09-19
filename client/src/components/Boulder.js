@@ -1,11 +1,12 @@
-// import { useState } from "react";
+// This component is a single boulder button getting the status from the scorecard component. 
 
 export default function SingleBoulder({ boulder, id, clickHandler }) {
     console.log("boulder: ", boulder);
     let boulderStatus = {};
 
-    // bouder.status 0: no send at all
-    // bouldeer.status 1: send in first try
+    //
+    // boulder.status 0: no send at all
+    // boulder.status 1: send in first try
     // boulder.status 2: send more then 1 try
     if (boulder.status === 0) {
         boulderStatus.visuals = "bg-red-700";

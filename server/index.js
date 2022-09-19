@@ -25,6 +25,16 @@ app.post("/api/newcomp", async (req, res) => {
     }
 });
 
+app.get("/api/currentcomps", async (req, res) => {
+    console.log("GET /currentcomps");
+    try {
+        const { rows } = await db.currentComps();
+        res.json(rows);
+    } catch {
+        res.json({ succes: false });
+    }
+});
+
 app.post("/api/newuser", async (req, res) => {
     console.log("POST /registration");
     const { userName } = req.body;
@@ -42,12 +52,10 @@ app.post("/api/newuser", async (req, res) => {
 
 app.get("/api/getallusers", async (req, res) => {
     console.log("GET /userslist: ");
-
     try {
-        const { rows } = await db.returnAllSuperUser();
+        const { rows } = await db.returnAllCompetitors();
         res.json(rows);
     } catch {
-        // console.log("err: ", err);
         res.json({ succes: false });
     }
 });

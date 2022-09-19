@@ -1,9 +1,11 @@
+// This component shows the full list of competitors and their scoring
 import { useState, useEffect } from "react";
 
 export default function Userslist() {
     const [allCompetitors, setAllCompetitors] = useState([]);
     const [error, setError] = useState(false);
 
+    // GET API for retrieving all competitors of the competition.
     useEffect(() => {
         fetch("/api/getallusers")
             .then((resp) => resp.json())

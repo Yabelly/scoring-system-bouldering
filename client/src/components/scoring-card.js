@@ -1,7 +1,10 @@
+// This component is the complete scoreform. it gets the scoring for each user and send the props to each "button" to Boulder.js
+
 import { useState } from "react";
-import SingleBoulder from "./boulder2";
+import SingleBoulder from "./Boulder";
 
 export default function ScoringCard() {
+    // !! replace hardcoded array with array from database
     const [boulders, setBoulders] = useState([
         { status: 0 },
         { status: 0 },
@@ -21,6 +24,7 @@ export default function ScoringCard() {
         { status: 0 },
     ]);
 
+    // function to change the status of the individual boulders.
     function clickHandler(id) {
         boulders[id].status++;
         if (boulders[id].status > 2) {
