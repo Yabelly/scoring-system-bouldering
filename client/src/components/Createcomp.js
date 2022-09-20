@@ -8,7 +8,7 @@ export default function CreateComp() {
     // !! replace with state when v1 is done: so i can add different formats for competing
     // const [compFormat, setCompFormat] = useState("classic");
 
-// POST API adding new competition
+    // POST API adding new competition
     function submitComp(e) {
         e.preventDefault();
         console.log(
@@ -34,7 +34,7 @@ export default function CreateComp() {
     }
 
     return (
-        <form className="bg-orange-300 flex flex-col justify-center items-center">
+        <form className="bg-blue-400 flex flex-col justify-center items-center">
             <label>name of the competition:</label>
             <input
                 name="compname"

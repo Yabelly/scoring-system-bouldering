@@ -43,7 +43,7 @@ export default function CreateUser() {
 
     return (
         <>
-            <div className="bg-blue-200 flex flex-col justify-center items-center">
+            <div className="bg-red-400 flex flex-col justify-center items-center">
                 <p>choose you competition</p>
                 <div className="grid grid-cols-3  bg-green-300">
                     {competitions.map((comp) => (
@@ -54,7 +54,7 @@ export default function CreateUser() {
                         >
                             {comp.compname}
                         </button>
-                    ))}  
+                    ))}
                 </div>
                 <p className="underline">enter your username</p>
                 <input

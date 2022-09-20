@@ -1,10 +1,6 @@
-// import ScoringCard from "./components/scoring-card";
-// import Userslist from "./components/userslist";
-
 import CreateComp from "./components/Createcomp";
 import CreateUser from "./components/Createuser";
 import Welcome from "./components/Welcome";
-
 import { Routes, Route, Link } from "react-router-dom";
 
 function App() {
@@ -15,7 +11,7 @@ function App() {
                 <Link to="createcomp">create a competition</Link>
                 <Link to="createuser">joining a competition</Link>
             </nav>
-            <main className="">
+            <main>
                 <Routes>
                     <Route path="/" element={<Welcome />} />
                     <Route path="/createcomp" element={<CreateComp />} />
