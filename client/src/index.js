@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import Dashboard from "./components/Dashboard";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import Test from "./components/Test";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -17,7 +17,7 @@ fetch("/api/id.json")
             root.render(
                 <React.StrictMode>
                     <BrowserRouter>
-                        <Test />
+                        <App />
                     </BrowserRouter>
                 </React.StrictMode>
             );
@@ -26,7 +26,7 @@ fetch("/api/id.json")
             root.render(
                 <React.StrictMode>
                     <BrowserRouter>
-                        <App />
+                        <Dashboard />
                     </BrowserRouter>
                 </React.StrictMode>
             );

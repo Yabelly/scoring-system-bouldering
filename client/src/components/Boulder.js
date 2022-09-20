@@ -1,7 +1,6 @@
-// This component is a single boulder button getting the status from the scorecard component. 
+// This component is a single boulder button getting the status from the scorecard component.
 
 export default function SingleBoulder({ boulder, id, clickHandler }) {
-    console.log("boulder: ", boulder);
     let boulderStatus = {};
 
     //

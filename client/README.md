@@ -10,9 +10,8 @@ online option - This version will be for personal use with mobile phone, registr
 .
 .
 next step;
--add cookie session for rendering 
--rerouting: newuser to competition page, newcomp to new component with sum up of competition
+
+-clean up routing (window.location.reload()) @ createuser.js
 -add min-max for amount of boulders for creating comps at server
-- add secrets.json / .gitignore
 
-
+-   add secrets.json / .gitignore

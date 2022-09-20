@@ -1,15 +1,16 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Next from "./Next";
+import ScoringCard from "./Scoring-card";
 
-export default function Test() {
+
+export default function Dashboard() {
     return (
         <>
             <nav className="w-full h-1/6 w-full bg-red-300 flex justify-evenly">
-                <Link to="/">teeeest</Link>
+                <Link to="/"></Link>
             </nav>
             <main>
                 <Routes>
-                    <Route path="/" element={<Next />} />
+                    <Route path="/" element={<ScoringCard />} />
                 </Routes>
             </main>
         </>

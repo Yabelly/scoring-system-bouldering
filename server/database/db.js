@@ -51,3 +51,13 @@ module.exports.boulderAmount = (chosenCompetitionId) => {
         [chosenCompetitionId]
     );
 };
+
+module.exports.getUserInfo = (userId) => {
+    return db.query(
+        `
+    SELECT * FROM competitor
+    Where (id = $1 )
+    `,
+        [userId]
+    );
+};

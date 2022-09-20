@@ -38,7 +38,7 @@ app.post("/api/newcomp", async (req, res) => {
     const { compName, boulderAmount, compFormat } = req.body;
     try {
         const { rows } = await db.newComp(compName, boulderAmount, compFormat);
-        res.json(rows);
+        res.json({ succes: true });
     } catch {
         res.json({ succes: false });
     }
@@ -89,6 +89,13 @@ app.get("/api/getallusers", async (req, res) => {
     }
 });
 
+app.get("/api/userinfo", function (req, res) {
+    console.log("GET request /api/user");
+    const { userId } = req.session;
+    db.getUserInfo(userId).then(({ rows }) => {
+        res.json(rows[0]);
+    });
+});
 // ---------------------server----------------//
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
