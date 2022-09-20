@@ -14,6 +14,6 @@ CREATE TABLE competitor (
     id  SERIAL PRIMARY KEY,
     competition_id INTEGER NOT NULL REFERENCES competitions(id),
     username VARCHAR(50) NOT NULL CHECK (username != ''),
-    scoring VARCHAR (1000)
+    scoring INTEGER[]
 
 );

@@ -21,7 +21,7 @@ export default function CreateUser() {
                     setCompetitions(data);
                 }
             });
-    }, []);
+    }, [error]);
 
     // POST API posting the new user to the database
     function submitUserName(e) {
@@ -54,7 +54,7 @@ export default function CreateUser() {
                         >
                             {comp.compname}
                         </button>
-                    ))}
+                    ))}  
                 </div>
                 <p className="underline">enter your username</p>
                 <input

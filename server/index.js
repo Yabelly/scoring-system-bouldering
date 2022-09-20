@@ -38,15 +38,13 @@ app.get("/api/currentcomps", async (req, res) => {
 app.post("/api/newuser", async (req, res) => {
     console.log("POST /registration");
     const { userName, chosenCompetitionId } = req.body;
-    console.log("req.body: ", req.body);
-
     try {
-        const rows = await db
+        const { rows } = await db
             .boulderAmount(chosenCompetitionId)
             .then(({ rows }) => {
                 let boulderArray = [];
                 for (let i = 1; i <= rows[0].boulderamount; i++) {
-                    boulderArray.push(0);
+                    boulderArray.push(`0`);
                 }
                 return boulderArray;
             })
@@ -56,11 +54,12 @@ app.post("/api/newuser", async (req, res) => {
                     userName,
                     boulderAmount
                 );
-                console.log("rows: ", rows[0]);
-            })
-            .then(({ rows }) => {
-                console.log("rows: ", rows);
+                console.log("rows last: ", rows);
+                return rows;
             });
+        console.log("rows after: ", rows);
+
+        res.json(rows);
     } catch (err) {
         console.log("err: ", err);
         res.json({ success: false });
