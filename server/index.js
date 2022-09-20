@@ -35,12 +35,42 @@ app.get("/api/currentcomps", async (req, res) => {
     }
 });
 
+// app.post("/api/newuser", async (req, res) => {
+//     console.log("POST /registration");
+//     const { userName, chosenCompetitionId } = req.body;
+//     try {
+//         const { rows } = await db
+//             .boulderAmount(chosenCompetitionId)
+//             .then(({ rows }) => {
+//                 let boulderArray = [];
+//                 for (let i = 1; i <= rows[0].boulderamount; i++) {
+//                     boulderArray.push(`0`);
+//                 }
+//                 return boulderArray;
+//             })
+//             .then(async (boulderAmount) => {
+//                 const { rows } = await db.newUser(
+//                     chosenCompetitionId,
+//                     userName,
+//                     boulderAmount
+//                 );
+//                 console.log("rows last: ", rows);
+//                 return
+//             });
+//         console.log("rows after: ", rows);
+
+//         res.json(rows);
+//     } catch (err) {
+//         console.log("err: ", err);
+//         res.json({ success: false });
+//     }
+// });
+
 app.post("/api/newuser", async (req, res) => {
     console.log("POST /registration");
     const { userName, chosenCompetitionId } = req.body;
     try {
-        const { rows } = await db
-            .boulderAmount(chosenCompetitionId)
+        db.boulderAmount(chosenCompetitionId)
             .then(({ rows }) => {
                 let boulderArray = [];
                 for (let i = 1; i <= rows[0].boulderamount; i++) {
@@ -48,18 +78,10 @@ app.post("/api/newuser", async (req, res) => {
                 }
                 return boulderArray;
             })
-            .then(async (boulderAmount) => {
-                const { rows } = await db.newUser(
-                    chosenCompetitionId,
-                    userName,
-                    boulderAmount
-                );
-                console.log("rows last: ", rows);
-                return rows;
-            });
-        console.log("rows after: ", rows);
-
-        res.json(rows);
+            .then((boulderAmount) =>
+                db.newUser(chosenCompetitionId, userName, boulderAmount)
+            )
+            .then(({ rows }) => res.json(rows[0]));
     } catch (err) {
         console.log("err: ", err);
         res.json({ success: false });
