@@ -7,6 +7,7 @@ export default function ScoringCard() {
     const [error, setError] = useState(false);
     const [boulders, setBoulders] = useState([]);
 
+
     useEffect(() => {
         fetch("/api/userinfo")
             .then((resp) => resp.json())
@@ -24,7 +25,8 @@ export default function ScoringCard() {
 
                     setBoulders(returnArray);
                 }
-            });
+            }) 
+            
     }, [error]);
 
     // function to change the status of the individual boulders.

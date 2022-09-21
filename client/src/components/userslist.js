@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 export default function Userslist() {
     const [allCompetitors, setAllCompetitors] = useState([]);
     const [error, setError] = useState(false);
+    console.log("error: ", error);
 
     // GET API for retrieving all competitors of the competition.
     useEffect(() => {
@@ -19,9 +20,6 @@ export default function Userslist() {
             });
     }, []);
     console.log("allCompetitors: ", allCompetitors);
-
-
-
 
     // !! rework this so results are represented and standings
     return (

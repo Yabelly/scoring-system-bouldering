@@ -9,7 +9,8 @@ export default function Welcome() {
             <div className="flex justify-evenly">
                 <Link
                     className="w-60 h-60 bg-blue-400 text-center text-2xl"
-                    to="createcomp"
+                    to="
+                    createcomp"
                 >
                     create a competition
                 </Link>
@@ -21,7 +22,5 @@ export default function Welcome() {
                 </Link>
             </div>
         </>
-        
     );
-    
 }

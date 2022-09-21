@@ -76,7 +76,7 @@ app.post("/api/newuser", async (req, res) => {
             )
             .then(({ rows }) => {
                 req.session.userId = rows[0].id;
-                res.json(rows[0]);
+                res.json({ success: true });
             });
     } catch (err) {
         console.log("err: ", err);
@@ -99,15 +99,6 @@ app.get("/api/userinfo", function (req, res) {
     const { userId } = req.session;
     db.getUserInfo(userId).then(({ rows }) => {
         res.json(rows[0]);
-    });
-});
-
-io.on("connection", function (socket) {
-    console.log(`socket with id ${socket.id} connected`);
-
-    socket.emit(`new-user`, { message: `hello mofo` });
-    socket.on(`thanks`, (info) => {
-        console.log("dat: ", info);
     });
 });
 
