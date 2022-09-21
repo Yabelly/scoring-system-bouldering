@@ -1,37 +1,25 @@
 // This component is the complete scoreform. it gets the scoring for each user and send the props to each "button" to Boulder.js
 import { io } from "socket.io-client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SingleBoulder from "./Boulder";
-
-export default function ScoringCard() {
-    const [error, setError] = useState(false);
-    const [boulders, setBoulders] = useState([]);
     const socket = io();
 
+export default function ScoringCard() {
+    // const [error, setError] = useState(false);
+    const [boulders, setBoulders] = useState([]);
+
     socket.on(`scorecard`, (data) => {
-        console.log("data scorecard: ", data)
-        
+        setBoulders(
+            data.map((score) => ({
+                status: score,
+            }))
+        );
     });
 
-    useEffect(() => {
-        fetch("/api/userinfo")
-            .then((resp) => resp.json())
-            .then((data) => {
-                if (data.success === false) {
-                    setError(true);
-                    console.log("error: ", error);
-                } else {
-                    setError(false);
-
-                    var returnArray = data.scoring.map((score) => ({
-                        status: score,
-                    }));
-
-                    setBoulders(returnArray);
-                }
-            });
-        return;
-    }, [error]);
+    socket.emit(
+        `update`,
+        boulders.map((boulder) => boulder.status)
+    );
 
     // function to change the status of the individual boulders.
     function clickHandler(id) {

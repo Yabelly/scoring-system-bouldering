@@ -16,7 +16,6 @@ export default function Dashboard() {
                     console.log("error: ", error);
                 } else {
                     setError(false);
-                    console.log("data: ", data);
                     setUserInfo(data);
                 }
             });

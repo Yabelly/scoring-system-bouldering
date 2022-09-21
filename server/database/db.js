@@ -56,7 +56,7 @@ module.exports.getUserInfo = (userId) => {
     return db.query(
         `
     SELECT * FROM competitor
-    Where (id = $1 )
+    WHERE (id = $1 )
     `,
         [userId]
     );
@@ -66,8 +66,16 @@ module.exports.userScoring = (userId) => {
     return db.query(
         `
     SELECT scoring FROM competitor
-    Where (id = $1 )
+    WHERE(id = $1 )
     `,
         [userId]
+    );
+};
+
+module.exports.userUpdateScoring = (userId, scoring) => {
+    return db.query(
+        `
+        UPDATE competitor SET scoring = $2 WHERE (id = $1)
+        `[userId, scoring]
     );
 };

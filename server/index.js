@@ -110,9 +110,13 @@ io.on("connection", async (socket) => {
         return socket.disconnect(true);
     }
     const userId = socket.request.session.userId;
-    console.log("userId that is connected: ", userId);
+    // console.log("userId that is connected: ", userId);
     const { rows } = await db.userScoring(userId);
     socket.emit(`scorecard`, rows[0].scoring);
+    socket.on(`update`, (data) => {
+        console.log("data from the front: ", data);
+        db.userUpdateScoring(userId, data);
+    });
 });
 
 // ---------------------server----------------//
