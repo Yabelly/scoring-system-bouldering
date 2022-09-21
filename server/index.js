@@ -2,6 +2,11 @@
 const express = require("express");
 const compression = require("compression");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
 const db = require("./database/db");
 var cookieSession = require("cookie-session");
 const PORT = process.env.PORT || 3001;
@@ -96,7 +101,18 @@ app.get("/api/userinfo", function (req, res) {
         res.json(rows[0]);
     });
 });
+
+io.on("connection", function (socket) {
+    console.log(`socket with id ${socket.id} connected`);
+
+    socket.emit(`new-user`, { message: `hello mofo` });
+    socket.on(`thanks`, (info) => {
+        console.log("dat: ", info);
+    });
+});
+
 // ---------------------server----------------//
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
