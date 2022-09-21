@@ -16,6 +16,7 @@ export default function ScoringCard() {
                     console.log("error: ", error);
                 } else {
                     setError(false);
+                    console.log("data: ", data);
 
                     var returnArray = data.scoring.map((score) => ({
                         status: score,

@@ -20,6 +20,10 @@ export default function Userslist() {
     }, []);
     console.log("allCompetitors: ", allCompetitors);
 
+
+
+
+    // !! rework this so results are represented and standings
     return (
         <>
             <div>
