@@ -8,20 +8,23 @@ const io = require("socket.io")(server, {
         callback(null, req.headers.referer.startsWith("http://localhost:3000")),
 });
 const db = require("./database/db");
-var cookieSession = require("cookie-session");
+const cookieSession = require("cookie-session");
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+});
+
 const PORT = process.env.PORT || 3001;
 
 // ---------------------middleware----------------//
 
 // cookie session
 // !! for production add secret to secrets.json
-app.use(
-    cookieSession({
-        secret: `I dont know this password.`,
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-        sameSite: true,
-    })
-);
+app.use(cookieSessionMiddleware);
+
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -100,6 +103,16 @@ app.get("/api/userinfo", function (req, res) {
     db.getUserInfo(userId).then(({ rows }) => {
         res.json(rows[0]);
     });
+});
+
+io.on("connection", async (socket) => {
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+    const userId = socket.request.session.userId;
+    console.log("userId that is connected: ", userId);
+    const { rows } = await db.userScoring(userId);
+    socket.emit(`scorecard`, rows[0].scoring);
 });
 
 // ---------------------server----------------//

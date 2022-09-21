@@ -61,3 +61,13 @@ module.exports.getUserInfo = (userId) => {
         [userId]
     );
 };
+
+module.exports.userScoring = (userId) => {
+    return db.query(
+        `
+    SELECT scoring FROM competitor
+    Where (id = $1 )
+    `,
+        [userId]
+    );
+};

@@ -29,12 +29,11 @@ export default function Dashboard() {
                 <Link to="/userslist">standings</Link>
             </nav>
             <main>
-                <div>{userInfo.username}</div>
-                <div>{userInfo.competition_id}</div>
+                <div>username: {userInfo.username}</div>
+                <div>competition ID: {userInfo.competition_id}</div>
+
                 <Routes>
                     <Route path="/userslist" element={<Userslist />} />
-                </Routes>
-                <Routes>
                     <Route path="/" element={<ScoringCard />} />
                 </Routes>
             </main>
