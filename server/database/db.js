@@ -72,10 +72,16 @@ module.exports.userScoring = (userId) => {
     );
 };
 
-module.exports.userUpdateScoring = (userId, scoring) => {
+module.exports.userUpdateScoring = (scoring, userId) => {
+    console.log("scoring db: ", scoring);
+    console.log("userId db: ", userId);
+
     return db.query(
         `
-        UPDATE competitor SET scoring = $2 WHERE (id = $1)
-        `[userId, scoring]
+        UPDATE competitor
+        SET scoring = $1 
+        WHERE id = $2
+        `,
+        [scoring, userId]
     );
 };
