@@ -8,8 +8,9 @@ export default function ScoringCard() {
     // const [error, setError] = useState(false);
     const [boulders, setBoulders] = useState([]);
 
+    // initial request to get the scoring from the server
     useEffect(() => {
-        console.log("run");
+        console.log("updated from server");
 
         socket.on(`scorecard`, (data) => {
             setBoulders(
@@ -18,11 +19,6 @@ export default function ScoringCard() {
                 }))
             );
         });
-
-        socket.emit(
-            `update`,
-            boulders.map((boulder) => boulder.status)
-        );
     }, [boulders]);
 
     // function to change the status of the individual boulders.
@@ -32,6 +28,11 @@ export default function ScoringCard() {
             boulders[id].status = 0;
         }
         setBoulders([...boulders]);
+        socket.emit(
+            `update`,
+            boulders.map((boulder) => boulder.status)
+        );
+        console.log("updated send");
     }
 
     return (
