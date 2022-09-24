@@ -12,7 +12,6 @@ function App() {
                 <Link to="createuser">joining a competition</Link>
             </nav>
             <main>
-        
                 <Routes>
                     <Route path="/" element={<Welcome />} />
                     <Route path="/createcomp" element={<CreateComp />} />

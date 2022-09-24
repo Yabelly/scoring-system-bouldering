@@ -6,7 +6,7 @@ export default function Userslist() {
     const [error, setError] = useState(false);
     console.log("error: ", error);
 
-    // GET API for retrieving all competitors of the competition.
+    // GET API for retrieving all competitor data of that competition.
     useEffect(() => {
         fetch("/api/getallusers")
             .then((resp) => resp.json())
@@ -19,7 +19,8 @@ export default function Userslist() {
                 }
             });
     }, []);
-    console.log("allCompetitors: ", allCompetitors);
+
+    // function rankByScore() {}
 
     // !! rework this so results are represented and standings
     return (

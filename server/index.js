@@ -105,12 +105,16 @@ app.get("/api/userinfo", function (req, res) {
     });
 });
 
+app.get("/api/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
+});
+
 io.on("connection", async (socket) => {
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
     const userId = socket.request.session.userId;
-
 
     const { rows } = await db.userScoring(userId);
     socket.emit(`scorecard`, rows[0].scoring)

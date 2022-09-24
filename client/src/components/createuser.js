@@ -35,10 +35,12 @@ export default function CreateUser() {
         })
             .then((resp) => resp.json())
             .then((data) => {
-                if (data.succes) {
+                console.log("data: ", data);
+
+                if (data.success === true) {
                     console.log("window.location: ", window.location);
 
-                    window.location.replace("../");
+                    window.location.replace("/");
                 } else {
                     console.log("something went wrong with API /newuser");
                 }

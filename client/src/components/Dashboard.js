@@ -21,21 +21,42 @@ export default function Dashboard() {
             });
     }, [error]);
 
+    
+
     return (
         <>
-            <nav className="w-full h-1/6 w-full bg-red-300 flex justify-evenly">
-                <Link to="/">scorecard</Link>
-                <Link to="/userslist">standings</Link>
-            </nav>
-            <main>
-                <div>username: {userInfo.username}</div>
-                <div>competition ID: {userInfo.competition_id}</div>
+            
+            <div className="bg-black">
+                <header className="w-full h-1/6 w-full bg-red-300 flex-col ">
+                    <div className="text-center text-5xl">
+                        {userInfo.username}
+                    </div>
+                    <div className="text-center text-3xl">
+                        competition ID: {userInfo.competition_id}
+                    </div>
+                </header>
+                <nav className="w-full h-1/6 w-full bg-green-300 flex justify-evenly">
+                    <Link
+                        className="border-solid border-2 border-black m-2.5 text-4xl"
+                        to="/"
+                    >
+                        scorecard
+                    </Link>
+                    <Link
+                        className="border-solid border-2 border-black m-2.5 text-4xl "
+                        to="/userslist"
+                    >
+                        standings
+                    </Link>
+                </nav>
 
-                <Routes>
-                    <Route path="/userslist" element={<Userslist />} />
-                    <Route path="/" element={<ScoringCard />} />
-                </Routes>
-            </main>
+                <main>
+                    <Routes>
+                        <Route path="/userslist" element={<Userslist />} />
+                        <Route path="/" element={<ScoringCard />} />
+                    </Routes>
+                </main>
+            </div>
         </>
     );
 }

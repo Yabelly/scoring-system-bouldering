@@ -8,7 +8,7 @@ export default function ScoringCard() {
     // const [error, setError] = useState(false);
     const [boulders, setBoulders] = useState([]);
 
-    // initial request to get the scoring from the server
+    // updates the scorecard from the server and sets it to local state
     useEffect(() => {
         console.log("updated from server");
 
@@ -21,7 +21,7 @@ export default function ScoringCard() {
         });
     }, [boulders]);
 
-    // function to change the status of the individual boulders.
+    // function to change the status of the individual boulders and updates the database with the new array
     function clickHandler(id) {
         boulders[id].status++;
         if (boulders[id].status > 2) {
@@ -37,7 +37,7 @@ export default function ScoringCard() {
 
     return (
         <>
-            <div className="bg-amber-400 grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 m-3">
                 {boulders.map((boulder, idx) => (
                     <SingleBoulder
                         boulder={boulder}
