@@ -22,7 +22,7 @@ export default function CreateUser() {
                 }
             });
     }, [error]);
-
+// add password to this component   
     // POST API posting the new user to the database
     function submitUserName(e) {
         e.preventDefault();

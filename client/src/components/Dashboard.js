@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import ScoringCard from "./Scoring-card";
 import Userslist from "./Userslist";
+import Logout from "./Logout";
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState([]);
@@ -21,12 +22,10 @@ export default function Dashboard() {
             });
     }, [error]);
 
-    
-
     return (
         <>
-            
             <div className="bg-black">
+                {/* <Logout className="bg-white h-1/6" />  */}
                 <header className="w-full h-1/6 w-full bg-red-300 flex-col ">
                     <div className="text-center text-5xl">
                         {userInfo.username}

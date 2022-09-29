@@ -12,6 +12,7 @@ online option - This version will be for personal use with mobile phone, registr
 next step;
 -add log-in
 -add log-out
+path ending should change with comp name @createcomp
 -fix rendering between Scorecard and Userslist
 -clean up routing (window.location.reload()) @ createuser.js
 -add min-max for amount of boulders for creating comps at server

@@ -3,9 +3,10 @@ export default function Logout() {
         fetch("/api/logout");
     }
 
+    // logout is inconsistent and also makes login fragile maybe
     return (
         <>
-            <button onClick={removeCookie()}></button>
+            <button onClick={removeCookie()}>Log Out</button>
         </>
     );
 }
