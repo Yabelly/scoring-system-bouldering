@@ -68,7 +68,13 @@ export default function CreateUser() {
                 <input
                     name="username"
                     type="text"
-                    placeholder="username"
+                    placeholder="username here"
+                    onChange={(e) => SetUserName(e.target.value)}
+                ></input>
+                <input
+                    name="password"
+                    type="password"
+                    placeholder="password here"
                     onChange={(e) => SetUserName(e.target.value)}
                 ></input>
 

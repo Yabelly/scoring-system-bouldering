@@ -42,13 +42,13 @@ app.get("/api/id.json", function (req, res) {
 });
 
 app.post("/api/newcomp", async (req, res) => {
-    console.log("POST, /createcomp");
+    console.log("POST /createcomp");
     const { compName, boulderAmount, compFormat } = req.body;
     try {
         const { rows } = await db.newComp(compName, boulderAmount, compFormat);
         res.json({ succes: true });
     } catch {
-        res.json({ succes: false });
+        res.json({ succes: false })
     }
 });
 
@@ -106,6 +106,8 @@ app.get("/api/userinfo", function (req, res) {
 });
 
 app.get("/api/logout", (req, res) => {
+    console.log("GET /logout");
+
     req.session = null;
     res.redirect("/");
 });
@@ -117,7 +119,7 @@ io.on("connection", async (socket) => {
     const userId = socket.request.session.userId;
 
     const { rows } = await db.userScoring(userId);
-    socket.emit(`scorecard`, rows[0].scoring)
+    socket.emit(`scorecard`, rows[0].scoring);
 
     await socket.on(`update`, (data) => {
         db.userUpdateScoring(data, userId);

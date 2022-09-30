@@ -25,7 +25,7 @@ export default function Dashboard() {
     return (
         <>
             <div className="bg-black">
-                {/* <Logout className="bg-white h-1/6" />  */}
+                <Logout className="bg-lime-500 h-1/6" />
                 <header className="w-full h-1/6 w-full bg-red-300 flex-col ">
                     <div className="text-center text-5xl">
                         {userInfo.username}
