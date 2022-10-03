@@ -2,6 +2,7 @@
 const express = require("express");
 const compression = require("compression");
 const app = express();
+// const { hash, compare } = require("./bc");
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
     allowRequest: (req, callback) =>
@@ -9,6 +10,7 @@ const io = require("socket.io")(server, {
 });
 const db = require("./database/db");
 const cookieSession = require("cookie-session");
+const { type } = require("os");
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
     maxAge: 1000 * 60 * 60 * 24 * 90,
@@ -48,7 +50,7 @@ app.post("/api/newcomp", async (req, res) => {
         const { rows } = await db.newComp(compName, boulderAmount, compFormat);
         res.json({ succes: true });
     } catch {
-        res.json({ succes: false })
+        res.json({ succes: false });
     }
 });
 
@@ -62,40 +64,86 @@ app.get("/api/currentcomps", async (req, res) => {
     }
 });
 
+// app.post("/api/newuser", async (req, res) => {
+//     console.log("POST /newuser");
+//     console.log("req.body: ", req.body);
+//     const { userName, chosenCompetitionId, pinOne } = req.body;
+//     const test = "something";
+//     try {
+//         await db
+//             .boulderAmount(chosenCompetitionId)
+//             .then(({ rows }) => {
+//                 let boulderArray = [];
+
+//                 for (let i = 1; i <= rows[0].boulderamount; i++) {
+//                     boulderArray.push(`0`);
+//                 }
+//                 return boulderArray;
+//             })
+//             .then((boulderAmount) =>
+//                 db.newUser(chosenCompetitionId, userName, boulderAmount, test)
+//             )
+//             .then(({ rows }) => {
+//                 req.session.userId = rows[0].id;
+//                 res.json({ success: true });
+//             });
+//     } catch (err) {
+//         console.log("err: ", err);
+//         res.json({ success: false });
+//     }
+// });
+
+// return something from
+
 app.post("/api/newuser", async (req, res) => {
     console.log("POST /newuser");
-    const { userName, chosenCompetitionId } = req.body;
+    console.log("req.body: ", req.body);
+    const { userName, chosenCompetitionId, pinOne } = req.body;
+
     try {
-        db.boulderAmount(chosenCompetitionId)
+        const userExists = await db
+            .userNameCheck(chosenCompetitionId, userName)
+            .then(({ rows }) => (rows[0] ? true : false));
+        const boulderArray = await db
+            .boulderAmount(chosenCompetitionId)
             .then(({ rows }) => {
                 let boulderArray = [];
+
                 for (let i = 1; i <= rows[0].boulderamount; i++) {
                     boulderArray.push(`0`);
                 }
-                return boulderArray;
-            })
-            .then((boulderAmount) =>
-                db.newUser(chosenCompetitionId, userName, boulderAmount)
-            )
-            .then(({ rows }) => {
-                req.session.userId = rows[0].id;
-                res.json({ success: true });
-            });
-    } catch (err) {
-        console.log("err: ", err);
-        res.json({ success: false });
-    }
-});
+                console.log("boulderArray: ", boulderArray);
 
-app.get("/api/getallusers", async (req, res) => {
-    console.log("GET /userslist: ");
-    try {
-        const { rows } = await db.returnAllCompetitors();
-        res.json(rows);
+                return boulderArray;
+            });
+        console.log("userExists, boulderArray: ", userExists, boulderArray);
+        if (!userExists) {
+            await db
+                .newUser(chosenCompetitionId, userName, boulderArray, pinOne)
+
+                .then(({ rows }) => {
+                    console.log("rows[0]: ", rows[0]);
+
+                    req.session.userId = rows[0].id;
+                    res.json({ success: true });
+                });
+        } else {
+            res.json({ useName: false });
+        }
     } catch {
+        console.log("oops");
         res.json({ succes: false });
     }
 });
+
+// 1 bestaat de username in db
+//2 maak pincode
+// 3hoeveel boulders heeft username nodig
+// 4maak array met boulders
+// 4  maak newuser in db
+
+//extra voor morgen:
+// verder met bcrypt voor hashing password
 
 app.get("/api/userinfo", function (req, res) {
     console.log("GET request /api/user");

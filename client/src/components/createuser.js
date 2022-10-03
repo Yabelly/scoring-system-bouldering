@@ -5,8 +5,11 @@ import { useState, useEffect } from "react";
 export default function CreateUser() {
     const [competitions, setCompetitions] = useState([]);
     const [error, setError] = useState(false);
-    const [userName, SetUserName] = useState("");
+    const [userName, setUserName] = useState("");
     const [chosenCompetitionId, setChosenCompetitionId] = useState("");
+    const [pinOne, setPinOne] = useState(``);
+    const [pinTwo, setPinTwo] = useState(``);
+    console.log("pinOne: ", pinOne);
 
     // GET API to retrieve all open competitions
     useEffect(() => {
@@ -22,32 +25,50 @@ export default function CreateUser() {
                 }
             });
     }, [error]);
-// add password to this component   
-    // POST API posting the new user to the database
+
     function submitUserName(e) {
         e.preventDefault();
-        fetch("/api/newuser", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userName, chosenCompetitionId }),
-        })
-            .then((resp) => resp.json())
-            .then((data) => {
-                console.log("data: ", data);
 
-                if (data.success === true) {
-                    console.log("window.location: ", window.location);
+        // regex to check if userName has only letters and numbers
+        const userNameRegex = /^[a-zA-Z0-9]+$/;
 
-                    window.location.replace("/");
-                } else {
-                    console.log("something went wrong with API /newuser");
-                }
+        if (
+            userName.match(userNameRegex) &&
+            pinOne === pinTwo &&
+            pinOne.length === 4
+        ) {
+            fetch("/api/newuser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userName, chosenCompetitionId, pinOne }),
             })
+                .then((resp) => resp.json())
+                .then((data) => {
+                    console.log("data: ", data);
 
-            .catch((err) => console.log("err: ", err));
+                    if (data.success === true) {
+                        window.location.replace("/");
+                    } else {
+                        console.log("something went wrong with API /newuser");
+                    }
+                })
+
+                .catch((err) => console.log("err: ", err));
+        } else {
+            setError(true);
+        }
     }
+
+    // Pseudocode:
+    // check if database has name already
+    // bcrypt en add to database
+    // send back succes Object
+
+    // pin psuedo:
+    // usestate for pin1 and pin2
+    // onclick check if p1 and p2 are same AND if they contain 4 digits
 
     return (
         <>
@@ -69,15 +90,23 @@ export default function CreateUser() {
                     name="username"
                     type="text"
                     placeholder="username here"
-                    onChange={(e) => SetUserName(e.target.value)}
+                    onChange={(e) => setUserName(e.target.value)}
                 ></input>
+                <br></br>
+                <p className="underline"> enter a 4 digit pincode (0-9)</p>
                 <input
-                    name="password"
-                    type="password"
-                    placeholder="password here"
-                    onChange={(e) => SetUserName(e.target.value)}
+                    name="pincode"
+                    type="number"
+                    placeholder="pincode here"
+                    onChange={(e) => setPinOne(e.target.value)}
                 ></input>
-
+                <p className="underline">confirm pincode</p>
+                <input
+                    name="pincoderepeat"
+                    type="number"
+                    placeholder="pincode here"
+                    onChange={(e) => setPinTwo(e.target.value)}
+                ></input>
                 <button
                     onClick={(e) => {
                         submitUserName(e);

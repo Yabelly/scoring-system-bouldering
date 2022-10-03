@@ -4,14 +4,19 @@ const db = spicedPg(
         `postgres:postgres:postgres@localhost:5432/scoringdatabase`
 );
 
-module.exports.newUser = (chosenCompetitionId, userName, boulderAmount) => {
+module.exports.newUser = (
+    chosenCompetitionId,
+    userName,
+    boulderAmount,
+    hash_pincode
+) => {
     return db.query(
         `
-    INSERT INTO competitor (competition_id, username, scoring)
-    VALUES ($1, $2, $3)
+    INSERT INTO competitor (competition_id, username, scoring, hash_pincode)
+    VALUES ($1, $2, $3, $4)
     RETURNING *
     `,
-        [chosenCompetitionId, userName, boulderAmount]
+        [chosenCompetitionId, userName, boulderAmount, hash_pincode]
     );
 };
 
@@ -83,5 +88,15 @@ module.exports.userUpdateScoring = (scoring, userId) => {
         WHERE id = $2
         `,
         [scoring, userId]
+    );
+};
+
+module.exports.userNameCheck = (chosenCompetitionId, userName) => {
+    return db.query(
+        `
+        SELECT * FROM competitor
+        WHERE (username = $2) AND (competition_id = $1)
+        `,
+        [chosenCompetitionId, userName]
     );
 };
