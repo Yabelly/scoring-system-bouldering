@@ -2,7 +2,7 @@
 const express = require("express");
 const compression = require("compression");
 const app = express();
-// const { hash, compare } = require("./bc");
+const { hash, compare } = require("./bc");
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
     allowRequest: (req, callback) =>
@@ -35,6 +35,17 @@ app.use(compression());
 app.use(express.json());
 
 // ---------------------routing----------------//
+app.get("/api/getallusers/:competition_id", async (req, res) => {
+    console.log("GET /getallusers");
+    try {
+        const { rows } = await db.returnAllCompetitors(
+            req.params.competition_id
+        );
+        res.json(rows);
+    } catch {
+        res.json({ success: false });
+    }
+});
 
 app.get("/api/id.json", function (req, res) {
     console.log("GET /id.json");
@@ -64,37 +75,6 @@ app.get("/api/currentcomps", async (req, res) => {
     }
 });
 
-// app.post("/api/newuser", async (req, res) => {
-//     console.log("POST /newuser");
-//     console.log("req.body: ", req.body);
-//     const { userName, chosenCompetitionId, pinOne } = req.body;
-//     const test = "something";
-//     try {
-//         await db
-//             .boulderAmount(chosenCompetitionId)
-//             .then(({ rows }) => {
-//                 let boulderArray = [];
-
-//                 for (let i = 1; i <= rows[0].boulderamount; i++) {
-//                     boulderArray.push(`0`);
-//                 }
-//                 return boulderArray;
-//             })
-//             .then((boulderAmount) =>
-//                 db.newUser(chosenCompetitionId, userName, boulderAmount, test)
-//             )
-//             .then(({ rows }) => {
-//                 req.session.userId = rows[0].id;
-//                 res.json({ success: true });
-//             });
-//     } catch (err) {
-//         console.log("err: ", err);
-//         res.json({ success: false });
-//     }
-// });
-
-// return something from
-
 app.post("/api/newuser", async (req, res) => {
     console.log("POST /newuser");
     console.log("req.body: ", req.body);
@@ -104,46 +84,38 @@ app.post("/api/newuser", async (req, res) => {
         const userExists = await db
             .userNameCheck(chosenCompetitionId, userName)
             .then(({ rows }) => (rows[0] ? true : false));
+
         const boulderArray = await db
             .boulderAmount(chosenCompetitionId)
             .then(({ rows }) => {
                 let boulderArray = [];
-
                 for (let i = 1; i <= rows[0].boulderamount; i++) {
                     boulderArray.push(`0`);
                 }
-                console.log("boulderArray: ", boulderArray);
-
                 return boulderArray;
             });
-        console.log("userExists, boulderArray: ", userExists, boulderArray);
+
         if (!userExists) {
+            const hashedPassword = await hash(pinOne);
             await db
-                .newUser(chosenCompetitionId, userName, boulderArray, pinOne)
+                .newUser(
+                    chosenCompetitionId,
+                    userName,
+                    boulderArray,
+                    hashedPassword
+                )
 
                 .then(({ rows }) => {
-                    console.log("rows[0]: ", rows[0]);
-
                     req.session.userId = rows[0].id;
                     res.json({ success: true });
                 });
         } else {
-            res.json({ useName: false });
+            res.json({ success: false, useName: false });
         }
     } catch {
-        console.log("oops");
-        res.json({ succes: false });
+        res.json({ success: false });
     }
 });
-
-// 1 bestaat de username in db
-//2 maak pincode
-// 3hoeveel boulders heeft username nodig
-// 4maak array met boulders
-// 4  maak newuser in db
-
-//extra voor morgen:
-// verder met bcrypt voor hashing password
 
 app.get("/api/userinfo", function (req, res) {
     console.log("GET request /api/user");
@@ -155,9 +127,8 @@ app.get("/api/userinfo", function (req, res) {
 
 app.get("/api/logout", (req, res) => {
     console.log("GET /logout");
-
     req.session = null;
-    res.redirect("/");
+    res.json({ success: true });
 });
 
 io.on("connection", async (socket) => {
@@ -165,6 +136,7 @@ io.on("connection", async (socket) => {
         return socket.disconnect(true);
     }
     const userId = socket.request.session.userId;
+    console.log("connected userid: ", userId);
 
     const { rows } = await db.userScoring(userId);
     socket.emit(`scorecard`, rows[0].scoring);

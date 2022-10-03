@@ -1,8 +1,16 @@
 export default function Logout() {
     function removeCookie() {
         console.log("clickes");
-
-        fetch("/api/logout");
+        fetch("/api/logout")
+            .then((resp) => resp.json())
+            .then((data) => {
+                console.log("data: ", data);
+                if (data.success) {
+                    window.location.replace("/");
+                } else {
+                    console.log("ow damnnn");
+                }
+            });
     }
 
     // logout is inconsistent and also makes login fragile maybe

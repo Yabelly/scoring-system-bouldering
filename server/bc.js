@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 module.exports.hash = (password) => {
     return bcrypt.genSalt().then((salt) => {

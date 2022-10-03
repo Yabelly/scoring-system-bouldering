@@ -5,7 +5,7 @@ import Userslist from "./Userslist";
 import Logout from "./Logout";
 
 export default function Dashboard() {
-    const [userInfo, setUserInfo] = useState([]);
+    const [userInfo, setUserInfo] = useState({});
     const [error, setError] = useState(false);
 
     useEffect(() => {
@@ -16,8 +16,6 @@ export default function Dashboard() {
                     setError(true);
                     console.log("error: ", error);
                 } else {
-                    console.log("data: ", data);
-
                     setError(false);
                     setUserInfo(data);
                 }
@@ -26,7 +24,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className="bg-black">
+            <div className="">
                 <Logout className="bg-lime-500 h-1/6" />
                 <header className="w-full h-1/6 w-full bg-red-300 flex-col ">
                     <div className="text-center text-5xl">
@@ -53,7 +51,17 @@ export default function Dashboard() {
 
                 <main>
                     <Routes>
-                        <Route path="/userslist" element={<Userslist />} />
+                        <Route
+                            path="/userslist"
+                            element={
+                                <Userslist
+                                    userId={userInfo.id}
+                                    userName={userInfo.username}
+                                    scoring={userInfo.scoring}
+                                    competition_id={userInfo.competition_id}
+                                />
+                            }
+                        />
                         <Route path="/" element={<ScoringCard />} />
                     </Routes>
                 </main>
