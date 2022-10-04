@@ -6,15 +6,16 @@ export default function Welcome() {
             <div className="underline text-5xl flex flex-col justify-center items-center">
                 welcome
             </div>
+            <br></br>
             <div className="flex justify-evenly">
                 <Link
-                    className="w-60 h-60 bg-blue-400 text-center text-2xl"
+                    className="w-60 bg-blue-400 text-center text-3xl"
                     to="createcomp"
                 >
                     create a competition
                 </Link>
                 <Link
-                    className="w-60 h-60 bg-red-400 text-center text-2xl"
+                    className="w-60 bg-red-400 text-center text-3xl"
                     to="createuser"
                 >
                     join a competition

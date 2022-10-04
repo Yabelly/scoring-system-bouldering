@@ -20,20 +20,20 @@ export default function Userslist(props) {
             });
     }, [competition_id]);
 
-    console.log("allCompetitors: ", allCompetitors);
+    // console.log("allCompetitors: ", allCompetitors);
 
-    function addTotalScoreForEach(allCompetitors, scoringArray) {
-        for (let i = 0; i <= allCompetitors.length; i++) {
-            const initialValue = 0;
-            const sumOfArray = scoringArray.reduce((accumulator, value) => {
-                return accumulator + value;
-            }, initialValue);
-            console.log("sumOfArray: ", sumOfArray);
-            
-        }
-    }
+    // function addTotalScoreForEach(allCompetitors, scoringArray) {
+    //     for (let i = 0; i <= allCompetitors.length; i++) {
+    //         const initialValue = 0;
+    //         const sumOfArray = scoringArray.reduce((accumulator, value) => {
+    //             return accumulator + value;
+    //         }, initialValue);
+    //         console.log("sumOfArray: ", sumOfArray);
 
-    addTotalScoreForEach(allCompetitors, allCompetitors.scoring);
+    //     }
+    // }
+
+    // addTotalScoreForEach(allCompetitors, allCompetitors.scoring);
 
     // i got all users array: allCompetitors
     // i got scoring array: allCompetitors[i].scoring

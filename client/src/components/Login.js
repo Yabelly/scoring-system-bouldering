@@ -1,15 +1,11 @@
-// This component is made to add new users to a competition.
-
 import { useState, useEffect } from "react";
 
-export default function CreateUser() {
+export default function Login() {
     const [competitions, setCompetitions] = useState([]);
     const [error, setError] = useState(false);
-    const [userName, setUserName] = useState("");
     const [chosenCompetitionId, setChosenCompetitionId] = useState("");
-    const [pinOne, setPinOne] = useState(``);
-    const [pinTwo, setPinTwo] = useState(``);
-    console.log("pinOne: ", pinOne);
+    const [userName, setUserName] = useState("");
+    const [pinCode, setPinCode] = useState(``);
 
     // GET API to retrieve all open competitions
     useEffect(() => {
@@ -32,17 +28,13 @@ export default function CreateUser() {
         // regex to check if userName has only letters and numbers
         const userNameRegex = /^[a-zA-Z0-9]+$/;
 
-        if (
-            userName.match(userNameRegex) &&
-            pinOne === pinTwo &&
-            pinOne.length === 4
-        ) {
-            fetch("/api/newuser", {
+        if (userName.match(userNameRegex) && pinCode.length === 4) {
+            fetch("/api/userlogin", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ userName, chosenCompetitionId, pinOne }),
+                body: JSON.stringify({ userName, chosenCompetitionId, pinCode }),
             })
                 .then((resp) => resp.json())
                 .then((data) => {
@@ -61,19 +53,10 @@ export default function CreateUser() {
         }
     }
 
-    // Pseudocode:
-    // check if database has name already
-    // bcrypt en add to database
-    // send back succes Object
-
-    // pin psuedo:
-    // usestate for pin1 and pin2
-    // onclick check if p1 and p2 are same AND if they contain 4 digits
-
     return (
         <>
             <div className="bg-red-400 flex flex-col justify-center items-center">
-                <p className="underline text-3xl">choose your competition</p>
+                <p>choose your competition</p>
                 <div className="grid grid-cols-3  bg-green-300">
                     {competitions.map((comp) => (
                         <button
@@ -85,8 +68,7 @@ export default function CreateUser() {
                         </button>
                     ))}
                 </div>
-                <br></br>
-                <p className="underline text-2xl">enter your username</p>
+                <p className="underline">enter your username</p>
                 <input
                     name="username"
                     type="text"
@@ -94,30 +76,20 @@ export default function CreateUser() {
                     onChange={(e) => setUserName(e.target.value)}
                 ></input>
                 <br></br>
-                <p className="underline text-2xl">
-                    enter a 4 digit pincode (0-9)
-                </p>
+                <p className="underline"> enter your 4 digit pincode</p>
                 <input
                     name="pincode"
                     type="number"
                     placeholder="pincode here"
-                    onChange={(e) => setPinOne(e.target.value)}
+                    onChange={(e) => setPinCode(e.target.value)}
                 ></input>
-                <br></br>
-                <p className="underline text-2xl">confirm pincode</p>
-                <input
-                    name="pincoderepeat"
-                    type="number"
-                    placeholder="pincode here"
-                    onChange={(e) => setPinTwo(e.target.value)}
-                ></input>
+
                 <button
-                    className="text-3xl border-solid border-2 border-black m-2.5 "
                     onClick={(e) => {
                         submitUserName(e);
                     }}
                 >
-                    Register
+                    login
                 </button>
             </div>
         </>

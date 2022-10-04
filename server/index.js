@@ -117,6 +117,29 @@ app.post("/api/newuser", async (req, res) => {
     }
 });
 
+app.post("/api/userlogin", async (req, res) => {
+    console.log("POST /login");
+    const { userName, chosenCompetitionId, pinCode } = req.body;
+    console.log("req.body: ", req.body);
+
+    try {
+        const { rows } = await db.retrieveUserInfo(
+            userName,
+            chosenCompetitionId
+        );
+
+        const isMatch = await compare(pinCode, rows[0].hash_pincode);
+        if (isMatch) {
+            req.session.userId = rows[0].id;
+            res.json({ success: true });
+        } else {
+            res.json({ success: false, useName: false });
+        }
+    } catch {
+        res.json({ success: false });
+    }
+});
+
 app.get("/api/userinfo", function (req, res) {
     console.log("GET request /api/user");
     const { userId } = req.session;

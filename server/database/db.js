@@ -102,3 +102,13 @@ module.exports.userNameCheck = (chosenCompetitionId, userName) => {
         [chosenCompetitionId, userName]
     );
 };
+
+module.exports.retrieveUserInfo = (userName, chosenCompetitionId) => {
+    return db.query(
+        `
+        SELECT competitor.hash_pincode, competitor.id FROM competitor
+        WHERE (username = $1) AND (competition_id = $2)
+    `,
+        [userName, chosenCompetitionId]
+    );
+};

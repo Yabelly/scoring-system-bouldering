@@ -16,7 +16,12 @@ export default function Logout() {
     // logout is inconsistent and also makes login fragile maybe
     return (
         <>
-            <button onClick={removeCookie}>Log Out</button>
+            <button
+                className="text-2xl bg-green-200 w-full"
+                onClick={removeCookie}
+            >
+                Log Out
+            </button>
         </>
     );
 }

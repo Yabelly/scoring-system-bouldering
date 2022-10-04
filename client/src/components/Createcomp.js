@@ -37,6 +37,10 @@ export default function CreateComp() {
             .catch((err) => console.log("err: ", err));
     }
 
+    const backToMainPage = function () {
+        window.location.replace("/");
+    };
+
     return (
         <>
             {error && (
@@ -46,7 +50,21 @@ export default function CreateComp() {
                 </div>
             )}
             {popUp && (
-                <div className="h-48 w-48 bg-green-500 fixed z-20 ">test</div>
+                <div className="h-full w-full bg-green-500 fixed z-20 flex flex-col items-center">
+                    <div className="text-2xl underline">
+                        Your competition is called
+                    </div>
+                    <div className="text-5xl">{compName}</div>
+                    <div className="text-2xl underline">the format is </div>
+                    <div className="text-5xl">{compFormat}</div>
+                    <div className="text-2xl underline">
+                        the amount of boulders
+                    </div>
+                    <div className="text-5xl">{boulderAmount}</div>
+                    <button onClick={() => backToMainPage()}>
+                        return to mainpage
+                    </button>
+                </div>
             )}
             {!popUp && !error && (
                 <form className="bg-blue-400 flex flex-col justify-center items-center">
