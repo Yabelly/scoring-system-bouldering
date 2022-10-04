@@ -22,25 +22,25 @@ export default function Userslist(props) {
 
     console.log("allCompetitors: ", allCompetitors);
 
-    // psudo
-    // function for sorting u
-    function userTotalScore(array) {
-        array.reduce((accumulator, value) => {
-            return accumulator + value;
-        }, 0);
+    function addTotalScoreForEach(allCompetitors, scoringArray) {
+        for (let i = 0; i <= allCompetitors.length; i++) {
+            const initialValue = 0;
+            const sumOfArray = scoringArray.reduce((accumulator, value) => {
+                return accumulator + value;
+            }, initialValue);
+            console.log("sumOfArray: ", sumOfArray);
+            
+        }
     }
 
-// i got all users array: allCompetitors
-// i got scoring array: allCompetitors[i].scoring
+    addTotalScoreForEach(allCompetitors, allCompetitors.scoring);
 
-// I need to first make a function that gives me total soore of an array
-// i need the results of that function to give each competitor a ranking
-// i need to use this ranking to map the users
+    // i got all users array: allCompetitors
+    // i got scoring array: allCompetitors[i].scoring
 
-
-
-
-allCompetitors.scoring.userTotalScore()
+    // I need to first make a function that gives me total soore of an array
+    // i need the results of that function to give each competitor a ranking
+    // i need to use this ranking to map the users
 
     // !! rework this so results are represented and standings
     return (

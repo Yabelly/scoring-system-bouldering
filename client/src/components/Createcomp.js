@@ -41,7 +41,6 @@ export default function CreateComp() {
         <>
             {error && (
                 <div className="h-48 w-48 bg-orange-500 fixed z-20 ">
-                    {" "}
                     Something went wrong
                     <button onClick={setError(false)}>try again</button>
                 </div>
