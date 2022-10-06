@@ -20,27 +20,30 @@ export default function Userslist(props) {
             });
     }, [competition_id]);
 
-    // console.log("allCompetitors: ", allCompetitors);
+    console.log("allCompetitors: ", allCompetitors);
 
-    // function addTotalScoreForEach(allCompetitors, scoringArray) {
-    //     for (let i = 0; i <= allCompetitors.length; i++) {
-    //         const initialValue = 0;
-    //         const sumOfArray = scoringArray.reduce((accumulator, value) => {
-    //             return accumulator + value;
-    //         }, initialValue);
-    //         console.log("sumOfArray: ", sumOfArray);
+    if (allCompetitors) {
+        allCompetitors.map((competitor) => {
+            let competitorScoring = competitor.scoring.reduce(
+                (accumulator, value) => {
+                    return accumulator + value;
+                },
+                0
+            );
+            console.log(
+                "competitorScoring: ",
+                competitor.username,
+                competitorScoring
+            );
+        });
+    }
 
-    //     }
+    // function totalPoints(arr){
+    //     let total = arr.reduce((accumulator, value) => {
+    //         return accumulator + value;
+    //     }, 0);
     // }
 
-    // addTotalScoreForEach(allCompetitors, allCompetitors.scoring);
-
-    // i got all users array: allCompetitors
-    // i got scoring array: allCompetitors[i].scoring
-
-    // I need to first make a function that gives me total soore of an array
-    // i need the results of that function to give each competitor a ranking
-    // i need to use this ranking to map the users
 
     // !! rework this so results are represented and standings
     return (

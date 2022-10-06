@@ -34,7 +34,11 @@ export default function Login() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ userName, chosenCompetitionId, pinCode }),
+                body: JSON.stringify({
+                    userName,
+                    chosenCompetitionId,
+                    pinCode,
+                }),
             })
                 .then((resp) => resp.json())
                 .then((data) => {
@@ -60,7 +64,7 @@ export default function Login() {
                 <div className="grid grid-cols-3  bg-green-300">
                     {competitions.map((comp) => (
                         <button
-                            className="border-solid border-2 border-black m-2.5 "
+                            className="border-solid border-2 border-black m-2.5  hover:bg-green-600 active:bg-violet-700 "
                             key={comp.id}
                             onClick={() => setChosenCompetitionId(comp.id)}
                         >
@@ -70,6 +74,7 @@ export default function Login() {
                 </div>
                 <p className="underline">enter your username</p>
                 <input
+                
                     name="username"
                     type="text"
                     placeholder="username here"

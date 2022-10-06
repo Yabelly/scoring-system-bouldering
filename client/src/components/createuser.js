@@ -77,7 +77,8 @@ export default function CreateUser() {
                 <div className="grid grid-cols-3  bg-green-300">
                     {competitions.map((comp) => (
                         <button
-                            className="border-solid border-2 border-black m-2.5 "
+                            className="border-solid border-2 border-black m-2.5  hover:bg-green-600 active:bg-violet-700 
+                             "
                             key={comp.id}
                             onClick={() => setChosenCompetitionId(comp.id)}
                         >
@@ -88,6 +89,7 @@ export default function CreateUser() {
                 <br></br>
                 <p className="underline text-2xl">enter your username</p>
                 <input
+                    className="after:content-['*'] after:ml-0.5 after:text-red-500"
                     name="username"
                     type="text"
                     placeholder="username here"
