@@ -22,6 +22,8 @@ export default function Dashboard() {
             });
     }, [error]);
 
+
+
     return (
         <>
             <div className="">
@@ -59,6 +61,7 @@ export default function Dashboard() {
                                     userName={userInfo.username}
                                     scoring={userInfo.scoring}
                                     competition_id={userInfo.competition_id}
+                                    compFormat={userInfo.compformat}
                                 />
                             }
                         />
