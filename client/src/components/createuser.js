@@ -1,5 +1,5 @@
 // This component is made to add new users to a competition.
-
+import { fetchGet, fetchPost } from "../functions/functions";
 import { useState, useEffect } from "react";
 
 export default function CreateUser() {
@@ -9,21 +9,13 @@ export default function CreateUser() {
     const [chosenCompetitionId, setChosenCompetitionId] = useState("");
     const [pinOne, setPinOne] = useState(``);
     const [pinTwo, setPinTwo] = useState(``);
-    console.log("pinOne: ", pinOne);
 
-    // GET API to retrieve all open competitions
+    // GET API to retrieve all competitions
     useEffect(() => {
-        fetch("/api/currentcomps")
-            .then((resp) => resp.json())
-            .then((data) => {
-                if (data.success === false) {
-                    setError(true);
-                    console.log("error: ", error);
-                } else {
-                    setError(false);
-                    setCompetitions(data);
-                }
-            });
+        fetchGet("/api/currentcomps").then((data) => {
+            console.log("data: ", data);
+            data ? setCompetitions(data) && setError(false) : setError(true);
+        });
     }, [error]);
 
     function submitUserName(e) {
@@ -32,43 +24,23 @@ export default function CreateUser() {
         // regex to check if userName has only letters and numbers
         const userNameRegex = /^[a-zA-Z0-9]+$/;
 
+        // check if pin is the same and if string constrains are met
         if (
             userName.match(userNameRegex) &&
             pinOne === pinTwo &&
             pinOne.length === 4
         ) {
-            fetch("/api/newuser", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ userName, chosenCompetitionId, pinOne }),
-            })
-                .then((resp) => resp.json())
-                .then((data) => {
-                    console.log("data: ", data);
-
-                    if (data.success === true) {
-                        window.location.replace("/");
-                    } else {
-                        console.log("something went wrong with API /newuser");
-                    }
-                })
-
-                .catch((err) => console.log("err: ", err));
+            fetchPost("/api/newuser", {
+                userName,
+                chosenCompetitionId,
+                pinOne,
+            }).then((data) =>
+                data ? window.location.replace("/") : setError(true)
+            );
         } else {
             setError(true);
         }
     }
-
-    // Pseudocode:
-    // check if database has name already
-    // bcrypt en add to database
-    // send back succes Object
-
-    // pin psuedo:
-    // usestate for pin1 and pin2
-    // onclick check if p1 and p2 are same AND if they contain 4 digits
 
     return (
         <>

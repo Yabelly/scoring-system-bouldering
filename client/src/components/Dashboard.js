@@ -3,26 +3,17 @@ import { Routes, Route, Link } from "react-router-dom";
 import ScoringCard from "./Scoring-card";
 import Userslist from "./Userslist";
 import Logout from "./Logout";
+import { fetchGet } from "../functions/functions";
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState({});
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        fetch("/api/userinfo")
-            .then((resp) => resp.json())
-            .then((data) => {
-                if (data.success === false) {
-                    setError(true);
-                    console.log("error: ", error);
-                } else {
-                    setError(false);
-                    setUserInfo(data);
-                }
-            });
+        fetchGet("/api/userinfo").then((data) =>
+            !data ? setError(true) : setUserInfo(data)
+        );
     }, [error]);
-
-
 
     return (
         <>

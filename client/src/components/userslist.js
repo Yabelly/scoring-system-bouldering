@@ -1,5 +1,6 @@
 // This component shows the full list of competitors and their scoring
 import { useState, useEffect } from "react";
+import { fetchGet } from "../functions/functions";
 
 export default function Userslist(props) {
     const [allCompetitors, setAllCompetitors] = useState([]);
@@ -8,23 +9,15 @@ export default function Userslist(props) {
 
     // GET API for retrieving all competitor data of that competition.
     useEffect(() => {
-        fetch(`/api/getallusers/${competition_id}`)
-            .then((resp) => resp.json())
-            .then((data) => {
-                if (data.success === false) {
-                    setError(true);
-                } else {
-                    setError(false);
-                    setAllCompetitors(data);
-                }
-            });
+        fetchGet(`/api/getallusers/${competition_id}`).then((data) =>
+            data ? setAllCompetitors(data) : setError(true)
+        );
     }, [competition_id]);
 
-// array with boulders and their results, this will be used for rendering 
-const allResults = []
+    // array with boulders and their results, this will be used for rendering
+    const allResults = [];
 
     if (allCompetitors) {
-       
     }
 
     // function to change the  scoring array elements  into points for classic mode

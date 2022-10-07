@@ -1,6 +1,7 @@
 // This component creates new competitions
 
 import { useState } from "react";
+import { fetchPost } from "../functions/functions";
 export default function CreateComp() {
     const [compName, setCompName] = useState("");
     const [boulderAmount, setBoulderAmount] = useState(3);
@@ -14,27 +15,11 @@ export default function CreateComp() {
     // POST API adding new competition
     function submitComp(e) {
         e.preventDefault();
-        console.log(
-            "compName, boulderAmount, compFormat: ",
-            compName,
-            boulderAmount,
-            compFormat
+        fetchPost("/api/newcomp", { compName, boulderAmount, compFormat }).then(
+            (data) => {
+                data.succes ? setPopUp(true) : setError(true);
+            }
         );
-
-        fetch("/api/newcomp", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ compName, boulderAmount, compFormat }),
-        })
-            .then((resp) => resp.json())
-            .then((data) => {
-                console.log("data back from server: ", data);
-                return data.succes ? setPopUp(true) : setError(true);
-            })
-
-            .catch((err) => console.log("err: ", err));
     }
 
     const backToMainPage = function () {

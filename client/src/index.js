@@ -5,32 +5,32 @@ import App from "./App";
 import Dashboard from "./components/Dashboard";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { fetchGet } from "./functions/functions";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-fetch("/api/id.json")
-    .then((resp) => resp.json())
-    .then((data) => {
-        if (!data.userId) {
-            console.log("nocookie: ");
-            root.render(
-                <React.StrictMode>
-                    <BrowserRouter>
-                        <App />
-                    </BrowserRouter>
-                </React.StrictMode>
-            );
-        } else {
-            console.log("yescookie");
-            root.render(
-                <React.StrictMode>
-                    <BrowserRouter>
-                        <Dashboard />
-                    </BrowserRouter>
-                </React.StrictMode>
-            );
-        }
-    });
+fetchGet("/api/id.json").then((data) => {
+    if (!data.userId) {
+        console.log("nocookie: ");
+        root.render(
+            <React.StrictMode>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </React.StrictMode>
+        );
+    } else {
+        console.log("yescookie");
+        root.render(
+            <React.StrictMode>
+                <BrowserRouter>
+                    <Dashboard />
+                </BrowserRouter>
+            </React.StrictMode>
+        );
+    }
+});
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

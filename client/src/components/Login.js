@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchGet } from "../functions/functions";
 
 export default function Login() {
     const [competitions, setCompetitions] = useState([]);
@@ -9,17 +10,9 @@ export default function Login() {
 
     // GET API to retrieve all open competitions
     useEffect(() => {
-        fetch("/api/currentcomps")
-            .then((resp) => resp.json())
-            .then((data) => {
-                if (data.success === false) {
-                    setError(true);
-                    console.log("error: ", error);
-                } else {
-                    setError(false);
-                    setCompetitions(data);
-                }
-            });
+        fetchGet("/api/currentcomps").then((data) =>
+            data ? setCompetitions(data) : setError(true)
+        );
     }, [error]);
 
     function submitUserName(e) {
@@ -74,7 +67,6 @@ export default function Login() {
                 </div>
                 <p className="underline">enter your username</p>
                 <input
-                
                     name="username"
                     type="text"
                     placeholder="username here"

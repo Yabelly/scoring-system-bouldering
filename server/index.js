@@ -57,6 +57,8 @@ app.get("/api/id.json", function (req, res) {
 app.post("/api/newcomp", async (req, res) => {
     console.log("POST /createcomp");
     const { compName, boulderAmount, compFormat } = req.body;
+    console.log("req.body: ", req.body);
+
     try {
         const { rows } = await db.newComp(compName, boulderAmount, compFormat);
         res.json({ succes: true });

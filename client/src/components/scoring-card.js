@@ -30,7 +30,6 @@ export default function ScoringCard() {
         );
         console.log("update send to server");
     }
-
     return (
         <>
             <div className="grid grid-cols-3 m-3">
