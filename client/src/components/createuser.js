@@ -14,7 +14,7 @@ export default function CreateUser() {
     useEffect(() => {
         fetchGet("/api/currentcomps").then((data) => {
             console.log("data: ", data);
-            data ? setCompetitions(data) && setError(false) : setError(true);
+            data ? setCompetitions(data) : setError(true);
         });
     }, [error]);
 

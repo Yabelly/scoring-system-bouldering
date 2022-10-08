@@ -12,20 +12,23 @@ export default function Dashboard() {
     useEffect(() => {
         fetchGet("/api/userinfo").then((data) =>
             !data ? setError(true) : setUserInfo(data)
-        );
+        )
+        
     }, [error]);
+    console.log("userInfo: ", userInfo);
 
     return (
         <>
             <div className="">
                 <Logout className="bg-lime-500 h-1/6" />
                 <header className="w-full h-1/6 w-full bg-red-300 flex-col ">
+                     <div className="text-center text-3xl">
+                       {userInfo.compname}
+                    </div>
                     <div className="text-center text-5xl">
                         {userInfo.username}
                     </div>
-                    <div className="text-center text-3xl">
-                        competition ID: {userInfo.competition_id}
-                    </div>
+                   
                 </header>
                 <nav className="w-full h-1/6 w-full bg-green-300 flex justify-evenly">
                     <Link

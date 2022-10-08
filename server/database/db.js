@@ -62,7 +62,7 @@ module.exports.boulderAmount = (chosenCompetitionId) => {
 module.exports.getUserInfo = (userId) => {
     return db.query(
         `
-    SELECT competitions.compformat, competitor.id, competitor.competition_id, competitor.username, competitor.scoring FROM competitor
+    SELECT competitions.compformat, competitions.compname, competitor.id, competitor.competition_id, competitor.username, competitor.scoring FROM competitor
  JOIN competitions
 on competitor.competition_id = competitions.id
 WHERE competitor.id = $1

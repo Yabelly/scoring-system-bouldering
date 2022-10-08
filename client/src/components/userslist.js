@@ -15,7 +15,7 @@ export default function Userslist(props) {
     }, [competition_id]);
 
     // array with boulders and their results, this will be used for rendering
-    const allResults = [];
+   
 
     if (allCompetitors) {
     }

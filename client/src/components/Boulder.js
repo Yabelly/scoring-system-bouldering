@@ -9,13 +9,13 @@ export default function SingleBoulder({ boulder, id, clickHandler }) {
     // boulder.status 2: send more then 1 try
     if (boulder.status === 0) {
         boulderStatus.visuals = "bg-red-500";
-        boulderStatus.text = "No Top";
+        boulderStatus.text = "Nope";
     } else if (boulder.status === 1) {
         boulderStatus.visuals = "bg-lime-400";
-        boulderStatus.text = "Topped";
+        boulderStatus.text = "Top";
     } else if (boulder.status === 2) {
         boulderStatus.visuals = "bg-sky-500";
-        boulderStatus.text = "Flashed";
+        boulderStatus.text = "Flash";
     }
 
     return (
@@ -24,8 +24,8 @@ export default function SingleBoulder({ boulder, id, clickHandler }) {
                 onClick={() => clickHandler(id)}
                 className={`aspect-square flex flex-col border-solid border-2 border-black ${boulderStatus.visuals}`}
             >
-                <div className="text-center text-3xl">{boulderStatus.text}</div>
-                <div className="text-center text-5xl"> {id + 1}</div>
+                <div className="text-center">{boulderStatus.text}</div>
+                <div className="text-center"> {id + 1}</div>
             </div>
         </>
     );
