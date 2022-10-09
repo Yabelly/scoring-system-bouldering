@@ -15,10 +15,6 @@ export default function Userslist(props) {
     }, [competition_id]);
 
     // array with boulders and their results, this will be used for rendering
-   
-
-    if (allCompetitors) {
-    }
 
     // function to change the  scoring array elements  into points for classic mode
     function classic(arr) {

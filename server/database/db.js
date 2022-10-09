@@ -114,3 +114,15 @@ module.exports.retrieveUserInfo = (userName, chosenCompetitionId) => {
         [userName, chosenCompetitionId]
     );
 };
+
+module.exports.compFromId = (userId) => {
+    return db.query(
+        `
+        SELECT competitor.competition_id
+        FROM competitor
+        WHERE id = $1
+        `,
+        [userId]
+    );
+};
+// selecting all users where the competition_id equels to the competition_id of the userId that i input

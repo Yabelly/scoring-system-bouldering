@@ -10,7 +10,6 @@ const io = require("socket.io")(server, {
 });
 const db = require("./database/db");
 const cookieSession = require("cookie-session");
-const { type } = require("os");
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
     maxAge: 1000 * 60 * 60 * 24 * 90,
@@ -161,14 +160,18 @@ io.on("connection", async (socket) => {
         return socket.disconnect(true);
     }
     const userId = socket.request.session.userId;
-    console.log("connected userid: ", userId);
 
-    const { rows } = await db.userScoring(userId);
-    socket.emit(`scorecard`, rows[0].scoring);
+    const scoring = await db
+        .userScoring(userId)
+        .then(({ rows }) => rows[0].scoring);
+    socket.emit(`scorecard`, scoring);
 
-    await socket.on(`update`, (data) => {
-        db.userUpdateScoring(data, userId);
-    });
+    const competition_id = await db
+        .compFromId(userId)
+        .then(({ rows }) => rows[0].competition_id);
+
+    const { rows } = await db.returnAllCompetitors(competition_id);
+    io.emit(`all-user-scores`, rows);
 });
 
 // ---------------------server----------------//
