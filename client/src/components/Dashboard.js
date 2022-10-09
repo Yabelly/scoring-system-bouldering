@@ -3,14 +3,21 @@ import { Routes, Route, Link } from "react-router-dom";
 import ScoringCard from "./Scoring-card";
 import Userslist from "./Userslist";
 import Logout from "./Logout";
-import { fetchGet, fetchPost } from "../functions/functions";
+import { fetchGet } from "../functions/functions";
 import { io } from "socket.io-client";
+import {
+    arrayFilled,
+    pointsClassic,
+    totalPoints,
+} from "../functions/rankingfunctions";
+// import UserRank from "./Userrank";
 const socket = io();
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState({});
     const [error, setError] = useState(false);
     const [allUsers, setAllUsers] = useState([]);
+    const [processedUsers, setProcessedUsers] = useState([]);
 
     useEffect(() => {
         fetchGet("/api/userinfo").then((data) =>
@@ -18,10 +25,22 @@ export default function Dashboard() {
         );
     }, [error]);
 
-    console.log("userInfo: ", userInfo);
-
     socket.on(`all-user-scores`, (allScores) => setAllUsers(allScores));
-    console.log("allUsers: ", allUsers);
+
+    useEffect(() => {
+        const scoredUsers = allUsers.map((user) => {
+            let scoring = user.scoring;
+
+            const pointsPerUser = pointsClassic(scoring);
+
+            const totalScorePerUser = totalPoints(pointsPerUser);
+
+            return { ...user, together: totalScorePerUser };
+        });
+        setProcessedUsers(scoredUsers);
+    }, [allUsers]);
+
+    console.log("processedUsers: ", processedUsers);
 
     return (
         <>
@@ -34,6 +53,7 @@ export default function Dashboard() {
                     <div className="text-center text-5xl">
                         {userInfo.username}
                     </div>
+                    {/* <UserRank></UserRank> */}
                 </header>
                 <nav className="w-full h-1/6 w-full bg-green-300 flex justify-evenly">
                     <Link
