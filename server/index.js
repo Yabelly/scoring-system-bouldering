@@ -168,7 +168,10 @@ app.get("/api/logout", (req, res) => {
     res.json({ success: true });
 });
 
-io.on("connection", async (socket) => {
+
+//???how do i make sure that i don't send the data over too much to Scoring-card.js? ????
+// ????How do i handle disconnecting of the socket better? when it disconnects it gives me a lot of errors on the the client side????
+io.on("connection", async (socket) => {  
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
@@ -179,12 +182,7 @@ io.on("connection", async (socket) => {
         .then(({ rows }) => rows[0].scoring);
     socket.emit(`scorecard`, scoring);
 
-    const competition_id = await db
-        .compFromId(userId)
-        .then(({ rows }) => rows[0].competition_id);
-
-    const { rows } = await db.returnAllCompetitors(competition_id);
-    io.emit(`all-user-scores`, rows);
+    socket.on("update", (data) => db.userUpdateScoring(data, userId));
 });
 
 // ---------------------server----------------//

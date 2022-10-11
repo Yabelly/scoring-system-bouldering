@@ -9,8 +9,10 @@ export default function UserRank({ userId, rankedUsers }) {
             {rank === 0 && <div>no score</div>}
             {rank !== 0 && (
                 <div>
-                    <div className="text-xl">rank: {rank}</div>
-                    <div className="text-xl">
+                    <div className="text-xl underline text-white">
+                        rank: {rank}
+                    </div>
+                    <div className="text-xl underline text-white">
                         points: {userPoints[0].summedScore}
                     </div>
                 </div>

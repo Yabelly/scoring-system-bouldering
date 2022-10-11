@@ -9,7 +9,6 @@ export default function ScoringCard() {
     const [boulders, setBoulders] = useState([]);
 
     // updates the scorecard from the server and sets it to local state
-
     socket.on(`scorecard`, (data) => {
         setBoulders(
             data.map((score) => ({
@@ -24,7 +23,8 @@ export default function ScoringCard() {
             boulders[id].status = 0;
         }
         setBoulders([...boulders]);
-        socket.emit(
+        socket.emit( // ???? How do I update my server more cleanly without firing from the the serverside so much? see line 171 of index.js(server)????
+                    // How do i get consistency in my render when I send the data over. I don't know how to handle the async behaviour??? 
             `update`,
             boulders.map((boulder) => boulder.status)
         );
