@@ -149,6 +149,19 @@ app.get("/api/userinfo", function (req, res) {
     });
 });
 
+app.get("/api/alldata", async function (req, res) {
+    console.log("GET /api/alldata");
+    const { userId } = req.session;
+
+    const userObject = await db.getUserInfo(userId).then(({ rows }) => rows[0]);
+
+    const compDataArray = await db
+        .returnAllCompetitors(userObject.competition_id)
+        .then(({ rows }) => rows);
+
+    res.json({ userObject, compDataArray });
+});
+
 app.get("/api/logout", (req, res) => {
     console.log("GET /logout");
     req.session = null;

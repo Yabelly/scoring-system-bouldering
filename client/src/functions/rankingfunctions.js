@@ -34,17 +34,3 @@ export function totalPoints(arr) {
     );
     return sumWithInitial;
 }
-
-// export function totalScoring(allUsersArray) {
-//     const dataArrived = arrayFilled(allUsersArray);
-//     if (!dataArrived) {
-//         console.log("no data just yet");
-//         return;
-//     } else {
-//         allUsersArray.map((scoringArrayPerUser) => {
-//             const pointsPerUser = pointsClassic(scoringArrayPerUser);
-//             const totalScorePerUser = totalPoints(pointsPerUser);
-//             return totalScorePerUser;
-//         });
-//     }
-// }

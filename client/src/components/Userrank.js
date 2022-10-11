@@ -1,7 +1,20 @@
-export default function UserRank() {
+export default function UserRank({ userId, rankedUsers }) {
+    
+    const rank = rankedUsers.map((obj) => obj.id).indexOf(userId) + 1;
+
+    const userPoints = rankedUsers.filter((obj) => obj.id === userId);
+
     return (
         <>
-            <div>test</div>
+            {rank === 0 && <div>no score</div>}
+            {rank !== 0 && (
+                <div>
+                    <div className="text-xl">rank: {rank}</div>
+                    <div className="text-xl">
+                        points: {userPoints[0].summedScore}
+                    </div>
+                </div>
+            )}
         </>
     );
 }

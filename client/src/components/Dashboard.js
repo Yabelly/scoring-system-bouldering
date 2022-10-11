@@ -3,44 +3,31 @@ import { Routes, Route, Link } from "react-router-dom";
 import ScoringCard from "./Scoring-card";
 import Userslist from "./Userslist";
 import Logout from "./Logout";
+import UserRank from "./Userrank";
 import { fetchGet } from "../functions/functions";
-import { io } from "socket.io-client";
-import {
-    arrayFilled,
-    pointsClassic,
-    totalPoints,
-} from "../functions/rankingfunctions";
-// import UserRank from "./Userrank";
-const socket = io();
+
+import { pointsClassic, totalPoints } from "../functions/rankingfunctions";
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState({});
-    const [error, setError] = useState(false);
     const [allUsers, setAllUsers] = useState([]);
-    const [processedUsers, setProcessedUsers] = useState([]);
 
     useEffect(() => {
-        fetchGet("/api/userinfo").then((data) =>
-            !data ? setError(true) : setUserInfo(data)
-        );
-    }, [error]);
-
-    socket.on(`all-user-scores`, (allScores) => setAllUsers(allScores));
-
-    useEffect(() => {
-        const scoredUsers = allUsers.map((user) => {
-            let scoring = user.scoring;
-
-            const pointsPerUser = pointsClassic(scoring);
-
-            const totalScorePerUser = totalPoints(pointsPerUser);
-
-            return { ...user, together: totalScorePerUser };
+        fetchGet("/api/alldata").then((data) => {
+            setUserInfo(data.userObject);
+            setAllUsers(data.compDataArray);
         });
-        setProcessedUsers(scoredUsers);
-    }, [allUsers]);
+    }, []);
 
-    console.log("processedUsers: ", processedUsers);
+    const scoredUsers = allUsers.map((user) => {
+        const pointsPerUser = pointsClassic(user.scoring);
+        const totalScorePerUser = totalPoints(pointsPerUser);
+        return { ...user, summedScore: totalScorePerUser };
+    });
+
+    const rankedUsers = scoredUsers.sort((a, b) => {
+        return b.summedScore - a.summedScore;
+    });
 
     return (
         <>
@@ -50,10 +37,15 @@ export default function Dashboard() {
                     <div className="text-center text-3xl">
                         {userInfo.compname}
                     </div>
-                    <div className="text-center text-5xl">
-                        {userInfo.username}
+                    <div className="flex flex-row place-content-evenly ">
+                        <div className="text-center text-5xl">
+                            {userInfo.username}
+                        </div>
+                        <UserRank
+                            rankedUsers={rankedUsers}
+                            userId={userInfo.id}
+                        ></UserRank>
                     </div>
-                    {/* <UserRank></UserRank> */}
                 </header>
                 <nav className="w-full h-1/6 w-full bg-green-300 flex justify-evenly">
                     <Link
@@ -76,11 +68,8 @@ export default function Dashboard() {
                             path="/userslist"
                             element={
                                 <Userslist
+                                    rankedUsers={rankedUsers}
                                     userId={userInfo.id}
-                                    userName={userInfo.username}
-                                    scoring={userInfo.scoring}
-                                    competition_id={userInfo.competition_id}
-                                    compFormat={userInfo.compformat}
                                 />
                             }
                         />
