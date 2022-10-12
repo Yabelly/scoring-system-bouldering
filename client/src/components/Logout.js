@@ -7,7 +7,6 @@ export default function Logout() {
         );
     }
 
-    // logout is inconsistent and also makes login fragile maybe
     return (
         <>
             <button

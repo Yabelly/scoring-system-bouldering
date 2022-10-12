@@ -15,11 +15,11 @@ export default function CreateComp() {
     // POST API adding new competition
     function submitComp(e) {
         e.preventDefault();
-        fetchPost("/api/newcomp", { compName, boulderAmount, compFormat }).then(
-            (data) => {
+        fetchPost("/api/newcomp", { compName, boulderAmount, compFormat })
+            .then((data) => {
                 data.succes ? setPopUp(true) : setError(true);
-            }
-        );
+            })
+            .catch(setError(true));
     }
 
     const backToMainPage = function () {
@@ -68,6 +68,13 @@ export default function CreateComp() {
                         max="100"
                         onChange={(e) => setBoulderAmount(e.target.value)}
                     ></input>
+                    <label>competition format</label>
+                    <button>classic mode</button>
+                    <button>Holland mode</button>
+                    <label>Do you use "zone" with your boulders</label>
+                    <input type="checkbox" name="zone"></input>
+                    <label>Do you want to use "first ascent" mode?</label>
+                    <input type="checkbox" name="firstascent"></input>
 
                     <button
                         onClick={(e) => {

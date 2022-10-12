@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchGet } from "../functions/functions";
+import { fetchGet, fetchPost } from "../functions/functions";
 
 export default function Login() {
     const [competitions, setCompetitions] = useState([]);
@@ -22,25 +22,18 @@ export default function Login() {
         const userNameRegex = /^[a-zA-Z0-9]+$/;
 
         if (userName.match(userNameRegex) && pinCode.length === 4) {
-            fetch("/api/userlogin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    userName,
-                    chosenCompetitionId,
-                    pinCode,
-                }),
+            fetchPost("/api/userlogin", {
+                userName,
+                chosenCompetitionId,
+                pinCode,
             })
-                .then((resp) => resp.json())
                 .then((data) => {
                     console.log("data: ", data);
 
                     if (data.success === true) {
                         window.location.replace("/");
                     } else {
-                        console.log("something went wrong with API /newuser");
+                        setError(true);
                     }
                 })
 

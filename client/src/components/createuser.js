@@ -36,7 +36,7 @@ export default function CreateUser() {
                 pinOne,
             }).then((data) =>
                 data ? window.location.replace("/") : setError(true)
-            );
+            )
         } else {
             setError(true);
         }
