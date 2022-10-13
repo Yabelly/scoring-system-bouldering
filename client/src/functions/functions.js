@@ -9,6 +9,8 @@ export const fetchGet = async (url) => {
     }
 };
 
+
+
 export const fetchPost = async (url, { ...postObjects }) => {
     try {
         const res = await fetch(url, {

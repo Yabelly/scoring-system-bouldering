@@ -1,13 +1,18 @@
-export default function UserRank({ userId, rankedUsers }) {
-    
-    const rank = rankedUsers.map((obj) => obj.id).indexOf(userId) + 1;
+import { useEffect, useState } from "react";
+import { arrayFilled } from "../functions/rankingfunctions";
 
-    const userPoints = rankedUsers.filter((obj) => obj.id === userId);
+export default function UserRank({ userId, rankedUsers }) {
+    const [rank, setRank] = useState(0);
+    const [userPoints, setUserPoints] = useState([]);
+
+    useEffect(() => {
+        setRank(rankedUsers.map((obj) => obj.id).indexOf(userId) + 1);
+        setUserPoints(rankedUsers.filter((obj) => obj.id === userId));
+    }, [userId, rankedUsers]);
 
     return (
         <>
-            {rank === 0 && <div>no score</div>}
-            {rank !== 0 && (
+            {arrayFilled(userPoints) && rank !== 0 && (
                 <div>
                     <div className="text-xl underline text-white">
                         rank: {rank}
