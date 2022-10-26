@@ -14,11 +14,12 @@ export default function Welcome() {
                 >
                     create a competition
                 </Link>
+
                 <Link
                     className="w-60 bg-red-400 text-center text-3xl"
-                    to="createuser"
+                    to="competitions"
                 >
-                    join a competition
+                    current competitions
                 </Link>
             </div>
         </>

@@ -21,7 +21,11 @@ export default function Dashboard() {
 
     const scoredUsers = allUsers.map((user) => {
         const pointsPerUser = pointsClassic(user.scoring);
+        console.log("pointPerUser: ", pointsPerUser);
+
         const totalScorePerUser = totalPoints(pointsPerUser);
+        console.log("totalScorePerUser: ", totalScorePerUser);
+
         return { ...user, summedScore: totalScorePerUser };
     });
 
@@ -45,10 +49,12 @@ export default function Dashboard() {
                             <div className="text-center text-5xl underline text-white ">
                                 {userInfo.username}
                             </div>
-                            <UserRank
-                                rankedUsers={rankedUsers}
-                                userId={userInfo.id}
-                            ></UserRank>
+                            <Link to="/userslist">
+                                <UserRank
+                                    rankedUsers={rankedUsers}
+                                    userId={userInfo.id}
+                                ></UserRank>
+                            </Link>
                         </div>
                     </header>
                     <nav className="w-full h-1/6 w-full  flex justify-around">
@@ -57,12 +63,6 @@ export default function Dashboard() {
                             to="/"
                         >
                             scorecard
-                        </Link>
-                        <Link
-                            className="bg-[#D00000] rounded-full p-1.5 text-white  m-2.5 text-3xl "
-                            to="/userslist"
-                        >
-                            standings
                         </Link>
                     </nav>
 

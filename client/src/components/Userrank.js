@@ -7,7 +7,8 @@ export default function UserRank({ userId, rankedUsers }) {
 
     useEffect(() => {
         setRank(rankedUsers.map((obj) => obj.id).indexOf(userId) + 1);
-        setUserPoints(rankedUsers.filter((obj) => obj.id === userId));
+        const thing = rankedUsers.filter((obj) => obj.id === userId);
+        setUserPoints(thing);
     }, [userId, rankedUsers]);
 
     return (

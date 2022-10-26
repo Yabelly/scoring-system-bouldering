@@ -3,6 +3,7 @@ import CreateUser from "./components/Createuser";
 import Welcome from "./components/Welcome";
 import { Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Login";
+import Competitions from "./components/Competitions";
 
 function App() {
     return (
@@ -20,10 +21,14 @@ function App() {
                 <Link className="text-xl underline" to="login">
                     login
                 </Link>
+                <Link className="text-xl underline" to="competitions">
+                    competitions
+                </Link>
             </nav>
             <main>
                 <Routes>
                     <Route path="/" element={<Welcome />} />
+                    <Route path="/competitions" element={<Competitions />} />
                     <Route path="/createcomp" element={<CreateComp />} />
                     <Route path="/createuser" element={<CreateUser />} />
                     <Route path="/login" element={<Login />} />

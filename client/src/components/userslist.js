@@ -2,9 +2,7 @@
 export default function Userslist(props) {
     const { rankedUsers } = props;
 
-    // write a function to render the users by userName with processedUsers
-
-    // !! rework this so results are represented and standings
+    // !! rework this so results are represented and standings5
     return (
         <>
             <div className=" bg-[#136F63] rounded-lg">
@@ -16,11 +14,15 @@ export default function Userslist(props) {
                 {rankedUsers.map((competitor, idx) => (
                     <div
                         key={idx}
-                        className="flex place-content-evenly bg-[#FFBA08] rounded-full mt-1"
+                        className="grid
+                         grid-cols-3 bg-[#FFBA08] rounded-full mx-2 px-1 mt-1.5"
                     >
                         <div className="text-2xl"> {idx + 1}</div>
                         <div className="text-2xl"> {competitor.username}</div>
-                        <div className="text-2xl"> {competitor.summedScore}</div>
+                        <div className="text-2xl">
+                            {" "}
+                            {competitor.summedScore}
+                        </div>
                     </div>
                 ))}
             </div>

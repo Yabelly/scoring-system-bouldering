@@ -13,7 +13,7 @@ export function isObjectEmty(obj) {
 export function pointsClassic(arr) {
     let scoreSingleBoulder = arr.map((item) => {
         if (item === 0) return item; // no score for boulder => 0 points
-        if (item === 1) {
+        else if (item === 1) {
             // boulder is topped => 2 points
             return (item = 2);
         } else if (item === 2) {
@@ -22,15 +22,15 @@ export function pointsClassic(arr) {
         }
         return item;
     });
-    return scoreSingleBoulder;
+    return [...scoreSingleBoulder];
 }
 
 // function reduce all the points to a total score
 export function totalPoints(arr) {
-    const initialValue = 0;
-    const sumWithInitial = arr.reduce(
+    const total = arr.reduce(
         (previousValue, currentValue) => previousValue + currentValue,
-        initialValue
+        0
     );
-    return sumWithInitial;
+
+    return total;
 }
