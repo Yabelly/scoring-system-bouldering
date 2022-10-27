@@ -21,10 +21,7 @@ export default function Dashboard() {
 
     const scoredUsers = allUsers.map((user) => {
         const pointsPerUser = pointsClassic(user.scoring);
-        console.log("pointPerUser: ", pointsPerUser);
-
         const totalScorePerUser = totalPoints(pointsPerUser);
-        console.log("totalScorePerUser: ", totalScorePerUser);
 
         return { ...user, summedScore: totalScorePerUser };
     });
@@ -37,7 +34,7 @@ export default function Dashboard() {
         <>
             <div className="bg-[#032B43] ">
                 <div className="bg-[#032B43] m-3">
-                    <header className="w-full h-1/6 w-full   flex-col ">
+                    <header className="w-full h-1/6 w-full   flex-col">
                         <div className="flex justify-between">
                             <div className="text-center text-3xl underline text-white">
                                 {userInfo.compname}

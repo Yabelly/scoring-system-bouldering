@@ -16,7 +16,8 @@ export default function CreateUser() {
             console.log("data: ", data);
             data ? setCompetitions(data) : setError(true);
         });
-    }, [error]);
+        console.log("running again");
+    }, []);
 
     function submitUserName(e) {
         e.preventDefault();
@@ -36,7 +37,7 @@ export default function CreateUser() {
                 pinOne,
             }).then((data) =>
                 data ? window.location.replace("/") : setError(true)
-            )
+            );
         } else {
             setError(true);
         }
@@ -44,12 +45,20 @@ export default function CreateUser() {
 
     return (
         <>
-            <div className="bg-red-400 flex flex-col justify-center items-center">
-                <p className="underline text-3xl">choose your competition</p>
-                <div className="grid grid-cols-3  bg-green-300">
+            <div className="bg-[#032B43]flex flex-col text-center">
+                <p className="text-5xl text-white">CHOOSE YOUR COMPETITION</p>
+                {error && (
+                    <div className="h-48 w-48 bg-orange-500 fixed z-20 ">
+                        Something went wrong
+                        <button onClick={setError(false)}>try again</button>
+                    </div>
+                )}
+                <br></br>
+
+                <div className="grid grid-cols-1 bg-[#FFBA08] rounded-lg">
                     {competitions.map((comp) => (
                         <button
-                            className="border-solid border-2 border-black m-2.5  hover:bg-green-600 active:bg-violet-700 
+                            className="text-3xl rounded-full m-2.5 bg-[#3F88C5] hover:bg-[#D00000] active:bg-[#D00000] hover:text-white
                              "
                             key={comp.id}
                             onClick={() => setChosenCompetitionId(comp.id)}
@@ -59,39 +68,48 @@ export default function CreateUser() {
                     ))}
                 </div>
                 <br></br>
-                <p className="underline text-2xl">enter your username</p>
+                <p className="underline text-3xl text-white">
+                    ENTER YOUR USERNAME
+                </p>
+                <p className=" text-2xl text-white">only letters & numbers</p>
                 <input
-                    className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                    className="text-3xl"
                     name="username"
                     type="text"
                     placeholder="username here"
                     onChange={(e) => setUserName(e.target.value)}
                 ></input>
                 <br></br>
-                <p className="underline text-2xl">
-                    enter a 4 digit pincode (0-9)
+                <br></br>
+                <p className="underline text-3xl text-white ">
+                    ENTER 4 DIGIT PINCODE
                 </p>
                 <input
+                    className="text-3xl"
                     name="pincode"
                     type="number"
                     placeholder="pincode here"
                     onChange={(e) => setPinOne(e.target.value)}
                 ></input>
                 <br></br>
-                <p className="underline text-2xl">confirm pincode</p>
+                <br></br>
+                <p className="underline text-3xl text-white">CONFIRM PINCODE</p>
                 <input
+                    className="text-3xl"
                     name="pincoderepeat"
                     type="number"
                     placeholder="pincode here"
                     onChange={(e) => setPinTwo(e.target.value)}
                 ></input>
+                <br></br>
+                <br></br>
                 <button
-                    className="text-3xl border-solid border-2 border-black m-2.5 "
+                    className="text-5xl text-white bg-[#D00000] rounded-full m-2.5 text-white px-1.5"
                     onClick={(e) => {
                         submitUserName(e);
                     }}
                 >
-                    Register
+                    JOIN COMP
                 </button>
             </div>
         </>

@@ -7,8 +7,8 @@ import Competitions from "./components/Competitions";
 
 function App() {
     return (
-        <div className="App  h-screen bg-gradient-to-b from-green-200 to-green-500">
-            <nav className="w-full h-1/6 w-full bg-red-300 flex flex-col justify-evenly ">
+        <div className="App  h-screen bg-[#032B43]">
+            {/* <nav className="w-full h-1/6 w-full bg-red-300 flex flex-col justify-evenly ">
                 <Link className="text-xl underline" to="/">
                     welcome
                 </Link>
@@ -24,7 +24,7 @@ function App() {
                 <Link className="text-xl underline" to="competitions">
                     competitions
                 </Link>
-            </nav>
+            </nav> */}
             <main>
                 <Routes>
                     <Route path="/" element={<Welcome />} />

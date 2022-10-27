@@ -1,5 +1,7 @@
 // This component is a single boulder button getting the status from the scorecard component.
 
+import { useState } from "react";
+
 export default function SingleBoulder({ boulder, id, clickHandler }) {
     let boulderStatus = {};
 
@@ -24,7 +26,9 @@ export default function SingleBoulder({ boulder, id, clickHandler }) {
                 onClick={() => clickHandler(id)}
                 className={`aspect-square flex flex-col border-solid border-2 border-black rounded-lg ${boulderStatus.visuals}`}
             >
-                <div className="text-center text-2xl mt-4">{boulderStatus.text}</div>
+                <div className="text-center text-2xl mt-4">
+                    {boulderStatus.text}
+                </div>
                 <div className="text-center text-4xl mt-1"> {id + 1}</div>
             </div>
         </>
