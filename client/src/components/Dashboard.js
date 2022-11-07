@@ -36,6 +36,8 @@ export default function Dashboard() {
         return b.summedScore - a.summedScore;
     });
 
+    console.log("scoreCardArray: ", scoreCardArray);
+
     return (
         <>
             <div className="bg-[#032B43] ">
