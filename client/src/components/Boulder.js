@@ -1,9 +1,14 @@
 // This component is a single boulder button getting the status from the scorecard component.
+import { useState, useEffect } from "react";
 
-import { useState } from "react";
-
-export default function SingleBoulder({ boulder, id, clickHandler }) {
+export default function SingleBoulder({ boulderTwo, id, clickHandler }) {
+    const [boulder, setBoulder] = useState({});
+    // console.log("running thing");
     let boulderStatus = {};
+
+    useEffect(() => {
+        setBoulder(boulderTwo);
+    }, [boulderTwo]);
 
     //
     // boulder.status 0: no send at all

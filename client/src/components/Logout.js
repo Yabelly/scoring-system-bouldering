@@ -3,7 +3,7 @@ import { fetchGet } from "../functions/functions";
 export default function Logout() {
     function removeCookie() {
         fetchGet("/api/logout").then((data) =>
-            data ? window.location.replace("/") : console.log("ow damnnn")
+            data ? window.location.replace("/") : console.log("ow  something is wrong with this logout component")
         );
     }
 

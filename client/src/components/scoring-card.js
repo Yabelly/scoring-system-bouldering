@@ -2,24 +2,55 @@
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import SingleBoulder from "./Boulder";
+import { arrayFilled } from "../functions/rankingfunctions";
 const socket = io();
 
 export default function ScoringCard() {
     const [boulders, setBoulders] = useState([]);
     console.log("render happening ");
+    console.log("boulders: ", boulders);
 
     // updates the scorecard from the server and sets it to local state
 
     useEffect(() => {
+        let active = true;
+        console.log("active: ", active);
+
         socket.on(`scorecard`, (data) => {
-            setBoulders(
-                data.map((score) => ({
-                    status: score,
-                }))
-            );
+            const fullData = data.map((score) => ({
+                status: score,
+            }));
+            setBoulders(fullData);
+            try {
+                localStorage.setItem(`scorecardata`, JSON.stringify(fullData));
+            } catch {
+                console.log("error in setting localstorage");
+            }
         });
-        console.log("socket is activated again");
-    },[]);
+        console.log("running again");
+
+        return () => {
+            active = false;
+        };
+    }, [boulders]);
+
+    // if (!arrayFilled(boulders)) {
+    //     console.log("no boulders from socket");
+    //     setBoulders(localStorage.getItem(`scorecardata`));
+    // }
+
+    function mapper() {
+        if (arrayFilled(boulders)) {
+            return boulders.map((boulder, idx) => (
+                <SingleBoulder
+                    boulderTwo={boulder}
+                    id={idx}
+                    clickHandler={clickHandler}
+                    key={idx}
+                ></SingleBoulder>
+            ));
+        }
+    }
 
     // function to change the status of the individual boulders and updates the database with the new array
     function clickHandler(id) {
@@ -39,16 +70,8 @@ export default function ScoringCard() {
 
     return (
         <>
-        
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 xl:grid-cols-10">
-                {boulders.map((boulder, idx) => (
-                    <SingleBoulder
-                        boulder={boulder}
-                        id={idx}
-                        clickHandler={clickHandler}
-                        key={idx}
-                    ></SingleBoulder>
-                ))}
+                {mapper()}
             </div>
         </>
     );

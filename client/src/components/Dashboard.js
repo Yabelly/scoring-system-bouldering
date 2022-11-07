@@ -13,10 +13,15 @@ export default function Dashboard() {
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
+        let active = true;
         fetchGet("/api/alldata").then((data) => {
+            console.log("data.userObject: ", data.userObject);
+            console.log("data.compDataArray: ", data.compDataArray);
+
             setUserInfo(data.userObject);
             setAllUsers(data.compDataArray);
         });
+        return () => (active = false);
     }, []);
 
     const scoredUsers = allUsers.map((user) => {

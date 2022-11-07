@@ -57,7 +57,6 @@ app.post("/api/newcomp", async (req, res) => {
     console.log("POST /createcomp");
     const { compName, boulderAmount, compFormat } = req.body;
     console.log("req.body: ", req.body);
-
     try {
         const { rows } = await db.newComp(compName, boulderAmount, compFormat);
         res.json({ succes: true });
@@ -168,14 +167,15 @@ app.get("/api/logout", (req, res) => {
     res.json({ success: true });
 });
 
-
 //???how do i make sure that i don't send the data over too much to Scoring-card.js? ????
 // ????How do i handle disconnecting of the socket better? when it disconnects it gives me a lot of errors on the the client side????
-io.on("connection", async (socket) => {  
+io.on("connection", async (socket) => {
     if (!socket.request.session.userId) {
+        console.log("socket disconnected");
         return socket.disconnect(true);
     }
     const userId = socket.request.session.userId;
+    console.log("userId: ", userId);
 
     const scoring = await db
         .userScoring(userId)
