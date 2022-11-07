@@ -4,22 +4,23 @@ import ScoringCard from "./Scoring-card";
 import Userslist from "./Userslist";
 import Logout from "./Logout";
 import UserRank from "./Userrank";
-import { fetchGet } from "../functions/functions";
+import { fetchGet, fetchPost } from "../functions/functions";
 
 import { pointsClassic, totalPoints } from "../functions/rankingfunctions";
+import Scorecard from "./Scorecard";
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState({});
     const [allUsers, setAllUsers] = useState([]);
+    const [scoreCardArray, setScoreCardArray] = useState([]);
 
     useEffect(() => {
         let active = true;
         fetchGet("/api/alldata").then((data) => {
-            console.log("data.userObject: ", data.userObject);
-            console.log("data.compDataArray: ", data.compDataArray);
-
             setUserInfo(data.userObject);
             setAllUsers(data.compDataArray);
+            setScoreCardArray(data.userObject.scoring);
+            console.log("useEffect ran");
         });
         return () => (active = false);
     }, []);
@@ -34,6 +35,20 @@ export default function Dashboard() {
     const rankedUsers = scoredUsers.sort((a, b) => {
         return b.summedScore - a.summedScore;
     });
+
+    const scorecardUpdater = (array, i) => {
+        const a = [...array];
+        a[i]++;
+        if (a[i] > 2) {
+            a[i] = 0;
+        }
+        return a;
+    };
+   
+    const clickHandler = (idx)=> {
+        
+    }
+    console.log("scoreCardArray: ", scoreCardArray);
 
     return (
         <>
@@ -79,7 +94,16 @@ export default function Dashboard() {
                                     />
                                 }
                             />
-                            <Route path="/" element={<ScoringCard />} />
+
+                            <Route
+                                path="/"
+                                element={
+                                    <Scorecard
+                                        clickHandler={clickHandler}
+                                        scoreCardArray={scoreCardArray}
+                                    />
+                                }
+                            />
                         </Routes>
                     </main>
                 </div>

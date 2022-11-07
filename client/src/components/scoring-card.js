@@ -21,11 +21,6 @@ export default function ScoringCard() {
                 status: score,
             }));
             setBoulders(fullData);
-            try {
-                localStorage.setItem(`scorecardata`, JSON.stringify(fullData));
-            } catch {
-                console.log("error in setting localstorage");
-            }
         });
         console.log("running again");
 
@@ -34,10 +29,6 @@ export default function ScoringCard() {
         };
     }, [boulders]);
 
-    // if (!arrayFilled(boulders)) {
-    //     console.log("no boulders from socket");
-    //     setBoulders(localStorage.getItem(`scorecardata`));
-    // }
 
     function mapper() {
         if (arrayFilled(boulders)) {

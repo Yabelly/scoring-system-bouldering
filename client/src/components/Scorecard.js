@@ -1,0 +1,18 @@
+import Item from "./Item";
+export default function Scorecard({ scoreCardArray, clickHandler }) {
+    return (
+        <>
+            <div>test</div>
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 xl:grid-cols-10">
+                {scoreCardArray.map((item, idx) => (
+                    <Item
+                        clickHandler={clickHandler}
+                        item={item}
+                        id={idx}
+                        key={idx}
+                    ></Item>
+                ))}
+            </div>
+        </>
+    );
+}
