@@ -15,7 +15,7 @@ export default function Item({ clickHandler, item, id }) {
     return (
         <>
             <div
-                onClick={() => clickHandler()}
+                onClick={() => clickHandler(id)}
                 className={`aspect-square flex flex-col border-solid border-2 border-black rounded-lg ${boulderStatus.visuals}`}
             >
                 <div className="text-center text-2xl mt-4">

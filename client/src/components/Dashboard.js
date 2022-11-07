@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import ScoringCard from "./Scoring-card";
+// import ScoringCard from "./Scoring-card";
 import Userslist from "./Userslist";
 import Logout from "./Logout";
 import UserRank from "./Userrank";
-import { fetchGet, fetchPost } from "../functions/functions";
+import { fetchGet } from "../functions/functions";
 
 import { pointsClassic, totalPoints } from "../functions/rankingfunctions";
 import Scorecard from "./Scorecard";
@@ -35,20 +35,6 @@ export default function Dashboard() {
     const rankedUsers = scoredUsers.sort((a, b) => {
         return b.summedScore - a.summedScore;
     });
-
-    const scorecardUpdater = (array, i) => {
-        const a = [...array];
-        a[i]++;
-        if (a[i] > 2) {
-            a[i] = 0;
-        }
-        return a;
-    };
-   
-    const clickHandler = (idx)=> {
-        
-    }
-    console.log("scoreCardArray: ", scoreCardArray);
 
     return (
         <>
@@ -99,7 +85,7 @@ export default function Dashboard() {
                                 path="/"
                                 element={
                                     <Scorecard
-                                        clickHandler={clickHandler}
+                                        setScoreCardArray={setScoreCardArray}
                                         scoreCardArray={scoreCardArray}
                                     />
                                 }
