@@ -11,14 +11,15 @@ export function isObjectEmty(obj) {
 
 // function to give points to boulder in classic mode
 export function pointsClassic(arr) {
-    let scoreSingleBoulder = arr.map((item) => {
+    const a = [...arr];
+    let scoreSingleBoulder = a.map((item) => {
         if (item === 0) return item; // no score for boulder => 0 points
         else if (item === 1) {
             // boulder is topped => 2 points
             return (item = 2);
         } else if (item === 2) {
-            //boulder is flashed => 2.4 points
-            return (item = 2.4);
+            //boulder is flashed => 3 points
+            return (item = 3);
         }
         return item;
     });
@@ -27,10 +28,16 @@ export function pointsClassic(arr) {
 
 // function reduce all the points to a total score
 export function totalPoints(arr) {
-    const total = arr.reduce(
+    const a = [...arr];
+    const total = a.reduce(
         (previousValue, currentValue) => previousValue + currentValue,
         0
     );
 
     return total;
 }
+
+export const numberTest = (n) => {
+    const result = n - Math.floor(n) !== 0;
+    return result;
+};

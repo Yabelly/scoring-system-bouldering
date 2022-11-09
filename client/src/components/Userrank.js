@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+        import { useEffect, useState } from "react";
 import { arrayFilled } from "../functions/rankingfunctions";
 
 export default function UserRank({ userId, rankedUsers }) {

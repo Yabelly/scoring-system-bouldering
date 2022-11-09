@@ -82,14 +82,12 @@ module.exports.userScoring = (userId) => {
 };
 
 module.exports.userUpdateScoring = (scoring, userId) => {
-    console.log("scoring db: ", scoring);
-    console.log("userId db: ", userId);
-
     return db.query(
         `
         UPDATE competitor
         SET scoring = $1 
         WHERE id = $2
+        RETURNING competitor.id
         `,
         [scoring, userId]
     );

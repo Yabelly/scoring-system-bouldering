@@ -1,5 +1,15 @@
 import Item from "./Item";
-export default function Scorecard({ setScoreCardArray, scoreCardArray }) {
+import { fetchPost } from "../functions/functions";
+import { useEffect } from "react";
+
+export default function Scorecard({ setScoreCardArray, scoreCardArray, id }) {
+    //add errorhandler
+    useEffect(() => {
+        fetchPost(`/api/updateuserarray`, { scoreCardArray, id }).then((data) =>
+            data.succes === true ? console.log("succes") : console.log("error")
+        );
+    });
+
     const scorecardUpdater = (array, i) => {
         const a = [...array];
         a[i]++;
@@ -9,6 +19,7 @@ export default function Scorecard({ setScoreCardArray, scoreCardArray }) {
         return a;
     };
 
+    //this is broken
     const clickHandler = (idx) => {
         setScoreCardArray(scorecardUpdater(scoreCardArray, idx));
     };

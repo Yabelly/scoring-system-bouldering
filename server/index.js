@@ -75,6 +75,17 @@ app.get("/api/currentcomps", async (req, res) => {
     }
 });
 
+app.post(`/api/updateuserarray`, async (req, res) => {
+    console.log("POST /updateuserarray");
+    const { scoreCardArray, id } = req.body;
+    try {
+        await db.userUpdateScoring(scoreCardArray, id);
+        res.json({ succes: true });
+    } catch {
+        res.json({ succes: false });
+    }
+});
+
 app.post("/api/newuser", async (req, res) => {
     console.log("POST /newuser");
     console.log("req.body: ", req.body);

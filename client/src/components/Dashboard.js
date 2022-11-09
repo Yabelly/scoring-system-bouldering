@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-// import ScoringCard from "./Scoring-card";
 import Userslist from "./Userslist";
 import Logout from "./Logout";
-import UserRank from "./Userrank";
 import { fetchGet } from "../functions/functions";
+import Ranking from "./Ranking";
 
 import { pointsClassic, totalPoints } from "../functions/rankingfunctions";
 import Scorecard from "./Scorecard";
+import UsersRanking from "./Usersranking";
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState({});
@@ -20,23 +20,20 @@ export default function Dashboard() {
             setUserInfo(data.userObject);
             setAllUsers(data.compDataArray);
             setScoreCardArray(data.userObject.scoring);
-            console.log("useEffect ran");
         });
         return () => (active = false);
     }, []);
 
-    const scoredUsers = allUsers.map((user) => {
-        const pointsPerUser = pointsClassic(user.scoring);
-        const totalScorePerUser = totalPoints(pointsPerUser);
+    // const scoredUsers = allUsers.map((user) => {
+    //     const pointsPerUser = pointsClassic(user.scoring);
+    //     const totalScorePerUser = totalPoints(pointsPerUser);
 
-        return { ...user, summedScore: totalScorePerUser };
-    });
+    //     return { ...user, summedScore: totalScorePerUser };
+    // });
 
-    const rankedUsers = scoredUsers.sort((a, b) => {
-        return b.summedScore - a.summedScore;
-    });
-
-    console.log("scoreCardArray: ", scoreCardArray);
+    // const rankedUsers = scoredUsers.sort((a, b) => {
+    //     return b.summedScore - a.summedScore;
+    // });
 
     return (
         <>
@@ -55,10 +52,15 @@ export default function Dashboard() {
                                 {userInfo.username}
                             </div>
                             <Link to="/userslist">
-                                <UserRank
+                                <Ranking
+                                    scoreCardArray={scoreCardArray}
+                                    pointsClassic={pointsClassic}
+                                    totalPoints={totalPoints}
+                                ></Ranking>
+                                {/* <UserRank
                                     rankedUsers={rankedUsers}
                                     userId={userInfo.id}
-                                ></UserRank>
+                                ></UserRank> */}
                             </Link>
                         </div>
                     </header>
@@ -76,10 +78,11 @@ export default function Dashboard() {
                             <Route
                                 path="/userslist"
                                 element={
-                                    <Userslist
-                                        rankedUsers={rankedUsers}
-                                        userId={userInfo.id}
-                                    />
+                                    // <Userslist
+                                    //     userId={userInfo.id}
+                                    //     rankedUsers={rankedUsers}
+                                    // />
+                                    <UsersRanking />
                                 }
                             />
 
@@ -89,6 +92,7 @@ export default function Dashboard() {
                                     <Scorecard
                                         setScoreCardArray={setScoreCardArray}
                                         scoreCardArray={scoreCardArray}
+                                        id={userInfo.id}
                                     />
                                 }
                             />
