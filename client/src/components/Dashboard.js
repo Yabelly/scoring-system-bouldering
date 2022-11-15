@@ -11,7 +11,6 @@ import {
     arrayFilled,
 } from "../functions/rankingfunctions";
 import Scorecard from "./Scorecard";
-import UsersRanking from "./Usersranking";
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState({});
@@ -92,13 +91,9 @@ export default function Dashboard() {
                             <Route
                                 path="/userslist"
                                 element={
-                                    // <Userslist
-                                    //     userId={userInfo.id}
-                                    //     rankedUsers={rankedUsers}
-                                    // />
-                                    <UsersRanking
-                                        error={error}
-                                        setError={setError}
+                                    <Userslist
+                                        userId={userInfo.id}
+                                        rankedUsers={rankedUsers}
                                     />
                                 }
                             />
