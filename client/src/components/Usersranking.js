@@ -1,6 +1,6 @@
-export default function UsersRanking  () {
+export default function UsersRanking  ({error, setError}) {
 
-    
+
 
 return(<><div>test</div></>)
 }

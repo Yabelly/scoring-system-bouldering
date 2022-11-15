@@ -5,35 +5,54 @@ import Logout from "./Logout";
 import { fetchGet } from "../functions/functions";
 import Ranking from "./Ranking";
 
-import { pointsClassic, totalPoints } from "../functions/rankingfunctions";
+import {
+    pointsClassic,
+    totalPoints,
+    arrayFilled,
+} from "../functions/rankingfunctions";
 import Scorecard from "./Scorecard";
 import UsersRanking from "./Usersranking";
 
 export default function Dashboard() {
     const [userInfo, setUserInfo] = useState({});
-    const [allUsers, setAllUsers] = useState([]);
     const [scoreCardArray, setScoreCardArray] = useState([]);
+    const [rankedUsers, setRankedUsers] = useState([]);
+    const [error, setError] = useState(false);
+    const [userScore, setUserScore] = useState(0);
+    const [userRank, setUserRank] = useState(0);
 
     useEffect(() => {
         let active = true;
         fetchGet("/api/alldata").then((data) => {
             setUserInfo(data.userObject);
-            setAllUsers(data.compDataArray);
-            setScoreCardArray(data.userObject.scoring);
+            if (!arrayFilled(scoreCardArray)) {
+                setScoreCardArray(data.userObject.scoring);
+            }
+
+            const scoredUsers = data.compDataArray.map((user) => {
+                const pointsPerUser = pointsClassic(user.scoring);
+                const totalScorePerUser = totalPoints(pointsPerUser);
+
+                return { ...user, summedScore: totalScorePerUser };
+            });
+            const totalRankings = scoredUsers.sort((a, b) => {
+                return b.summedScore - a.summedScore;
+            });
+            setRankedUsers(totalRankings);
+
+            const userObject = rankedUsers.filter(
+                (user) => user.id === userInfo.id
+            );
+            setUserScore(userObject[0].summedScore);
+
+            setUserRank(
+                rankedUsers.findIndex((user) => user.id === userInfo.id) + 1
+            );
         });
+        console.log("running");
+
         return () => (active = false);
-    }, []);
-
-    // const scoredUsers = allUsers.map((user) => {
-    //     const pointsPerUser = pointsClassic(user.scoring);
-    //     const totalScorePerUser = totalPoints(pointsPerUser);
-
-    //     return { ...user, summedScore: totalScorePerUser };
-    // });
-
-    // const rankedUsers = scoredUsers.sort((a, b) => {
-    //     return b.summedScore - a.summedScore;
-    // });
+    }, [JSON.stringify(scoreCardArray)]); // how to have a dependency that doesn't wreck my rendering?
 
     return (
         <>
@@ -53,14 +72,9 @@ export default function Dashboard() {
                             </div>
                             <Link to="/userslist">
                                 <Ranking
-                                    scoreCardArray={scoreCardArray}
-                                    pointsClassic={pointsClassic}
-                                    totalPoints={totalPoints}
-                                ></Ranking>
-                                {/* <UserRank
-                                    rankedUsers={rankedUsers}
-                                    userId={userInfo.id}
-                                ></UserRank> */}
+                                    userScore={userScore}
+                                    userRank={userRank}
+                                />
                             </Link>
                         </div>
                     </header>
@@ -82,7 +96,10 @@ export default function Dashboard() {
                                     //     userId={userInfo.id}
                                     //     rankedUsers={rankedUsers}
                                     // />
-                                    <UsersRanking />
+                                    <UsersRanking
+                                        error={error}
+                                        setError={setError}
+                                    />
                                 }
                             />
 
@@ -93,6 +110,8 @@ export default function Dashboard() {
                                         setScoreCardArray={setScoreCardArray}
                                         scoreCardArray={scoreCardArray}
                                         id={userInfo.id}
+                                        error={error}
+                                        setError={setError}
                                     />
                                 }
                             />
