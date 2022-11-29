@@ -124,3 +124,5 @@ module.exports.compFromId = (userId) => {
     );
 };
 // selecting all users where the competition_id equels to the competition_id of the userId that i input
+
+

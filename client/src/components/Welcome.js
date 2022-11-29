@@ -28,6 +28,7 @@ export default function Welcome() {
                 >
                     LOGIN
                 </Link>
+                <Link className="bg-[#D00000] rounded-full p-1.5 text-white m-2.5 text-3xl text-center" to="createcomp">createcomp</Link>
             </div>
         </>
     );

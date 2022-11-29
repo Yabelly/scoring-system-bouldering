@@ -1,12 +1,25 @@
 // This component shows the full list of competitors and their scoring
-export default function Userslist({  userId, rankedUsers}) {
+import OtherUser from "./Otheruser";
+import { useState } from "react";
 
 
+
+export default function Userslist({ userId, rankedUsers }) {
+    const [otherCompetitor, setOtherCompetitor] = useState(false);
+
+
+
+
+    const otherScorecard = (user) => {
+        setOtherCompetitor(user);
+    };
 
     return (
         <>
-            
-            <div></div>
+            {otherCompetitor && <OtherUser
+           
+            otherCompetitor={otherCompetitor}
+            ></OtherUser>}
             <div className=" bg-[#136F63] rounded-lg">
                 <div className="flex place-content-evenly ">
                     <div className="text-3xl">Rank</div>
@@ -15,6 +28,7 @@ export default function Userslist({  userId, rankedUsers}) {
                 </div>
                 {rankedUsers.map((competitor, idx) => (
                     <div
+                        onClick={() => otherScorecard(competitor)}
                         key={idx}
                         className={`grid
                          grid-cols-3 bg-[#FFBA08] ${

@@ -46,6 +46,17 @@ app.get("/api/getallusers/:competition_id", async (req, res) => {
     }
 });
 
+app.get(`/api/userarray`, async (req, res) => {
+    console.log("GET /userarray");
+    try {
+        const { userId } = req.session;
+        const { rows } = await db.userScoring(userId);
+        res.json(rows[0]);
+    } catch {
+        console.error();
+    }
+});
+
 app.get("/api/id.json", function (req, res) {
     console.log("GET /id.json");
     res.json({
@@ -77,9 +88,11 @@ app.get("/api/currentcomps", async (req, res) => {
 
 app.post(`/api/updateuserarray`, async (req, res) => {
     console.log("POST /updateuserarray");
-    const { scoreCardArray, id } = req.body;
+    const { newData, id } = req.body;
+    console.log("req.body: ", req.body);
+
     try {
-        await db.userUpdateScoring(scoreCardArray, id);
+        await db.userUpdateScoring(newData, id);
         res.json({ succes: true });
     } catch {
         res.json({ succes: false });
@@ -177,7 +190,6 @@ app.get("/api/logout", (req, res) => {
     req.session = null;
     res.json({ success: true });
 });
-
 
 // ---------------------server----------------//
 

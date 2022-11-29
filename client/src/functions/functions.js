@@ -2,14 +2,11 @@ export const fetchGet = async (url) => {
     try {
         const res = await fetch(url);
         console.log(`status response from url ${url}: `, res.ok);
-        const data = await res.json();
-        return data;
+        return res.json();
     } catch (err) {
         console.error(err);
     }
 };
-
-
 
 export const fetchPost = async (url, { ...postObjects }) => {
     try {
@@ -21,8 +18,7 @@ export const fetchPost = async (url, { ...postObjects }) => {
             body: JSON.stringify({ ...postObjects }),
         });
         console.log(`status response from url ${url}: `, res.ok);
-        const data = await res.json();
-        return data;
+        return res.json();
     } catch (err) {
         console.error(err);
     }

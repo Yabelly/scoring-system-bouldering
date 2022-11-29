@@ -6,7 +6,11 @@ import Dashboard from "./components/Dashboard";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { fetchGet } from "./functions/functions";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+
+export const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 fetchGet("/api/id.json").then((data) => {
@@ -24,7 +28,10 @@ fetchGet("/api/id.json").then((data) => {
         root.render(
             <React.StrictMode>
                 <BrowserRouter>
-                    <Dashboard />
+                    <QueryClientProvider client={queryClient}>
+                        <Dashboard />
+                        <ReactQueryDevtools/>
+                    </QueryClientProvider>
                 </BrowserRouter>
             </React.StrictMode>
         );
