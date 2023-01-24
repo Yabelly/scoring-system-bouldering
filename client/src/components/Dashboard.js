@@ -1,67 +1,19 @@
-import { useEffect, useState, useMemo } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Userslist from "./Userslist";
 import Logout from "./Logout";
 import { fetchGet } from "../functions/functions";
 import Ranking from "./Ranking";
-import {
-    pointsClassic,
-    totalPoints,
-    arrayFilled,
-} from "../functions/rankingfunctions";
 import Scorecard from "./Scorecard";
 import { useQuery } from "@tanstack/react-query";
+import Unlock from "./testComponenets/Unlock";
+import { useState } from "react";
 
 export default function Dashboard() {
-    const [userInfo, setUserInfo] = useState({});
-    const [scoreCardArray, setScoreCardArray] = useState([]);
-    const [rankedUsers, setRankedUsers] = useState([]);
-    // const [error, setError] = useState(false);
-    const [userScore, setUserScore] = useState(0);
-    const [userRank, setUserRank] = useState(0);
-
+    const [locked, setLocked] = useState(true);
     const { isLoading, isError, data, error } = useQuery({
-        queryKey: ["testdata"],
-        queryFn: () => fetchGet("/api/alldata"),
+        queryKey: ["userinfo"],
+        queryFn: () => fetchGet("/api/userinfo"),
     });
-
-    // const arrayDependendy = useMemo(() => {
-    //     return { array: scoreCardArray };
-    // }, [scoreCardArray]);
-
-    // useEffect(() => {
-    //     let active = true;
-    //     fetchGet("/api/alldata").then((data) => {
-    //         console.log("running dashboard useeffect");
-
-    //         setUserInfo(data.userObject);
-    //         if (!arrayFilled(scoreCardArray)) {
-    //             setScoreCardArray(data.userObject.scoring);
-    //         }
-
-    //         const scoredUsers = data.compDataArray.map((user) => {
-    //             const pointsPerUser = pointsClassic(user.scoring);
-    //             const totalScorePerUser = totalPoints(pointsPerUser);
-
-    //             return { ...user, summedScore: totalScorePerUser };
-    //         });
-    //         const totalRankings = scoredUsers.sort((a, b) => {
-    //             return b.summedScore - a.summedScore;
-    //         });
-    //         setRankedUsers(totalRankings);
-
-    //         const userObject = rankedUsers.filter(
-    //             (user) => user.id === userInfo.id
-    //         );
-    //         setUserScore(userObject[0].summedScore);
-
-    //         setUserRank(
-    //             rankedUsers.findIndex((user) => user.id === userInfo.id) + 1
-    //         );
-    //     });
-
-    //     return () => (active = false);
-    // }, [arrayDependendy]); // how to have a dependency that doesn't wreck my rendering?
 
     if (isLoading) {
         return <span className="bg-white">Loading...</span>;
@@ -73,29 +25,40 @@ export default function Dashboard() {
 
     return (
         <>
+            {locked && <Unlock className="z-10 absolute "
+            setLocked={setLocked}
+            ></Unlock>}
             <div className="bg-[#032B43] ">
                 <div className="bg-[#032B43] m-3">
                     <header className="w-full h-1/6 w-full   flex-col">
                         <div className="flex justify-between">
                             <div className="text-center text-3xl underline text-white">
-                                {data.userObject.compname}
+                                {data.compname}
                             </div>
                             <Logout />
+                        </div>
+                        <div className="flex flex-row place-content-evenly ">
+                            <div className="text-center text-5xl underline text-white ">
+                                {data.username}
+                            </div>
+                            <Link to="/userslist">
+                                <Ranking userName={data.username} />
+                            </Link>
                         </div>
                     </header>
                     <nav></nav>
                     <main>
                         <Routes>
                             <Route
-                                path="/"
+                                path="/userslist"
                                 element={
-                                    <Scorecard
-                                        //  setScoreCardArray={setScoreCardArray}
-                                        scoreCardArray={data.userObject.scoring}
-                                        id={data.userObject.id}
+                                    <Userslist
+                                        userId={data.id}
+                                        compId={data.competition_id}
                                     />
                                 }
                             />
+                            <Route path="/" element={<Scorecard />} />
                         </Routes>
                     </main>
                 </div>

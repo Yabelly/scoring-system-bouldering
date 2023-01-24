@@ -8,22 +8,29 @@ module.exports.newUser = (
     chosenCompetitionId,
     userName,
     boulderAmount,
-    hash_pincode
+    hash_pincode,
+    totalPoints
 ) => {
     return db.query(
         `
-    INSERT INTO competitor (competition_id, username, scoring, hash_pincode)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO competitor (competition_id, username, scoring, hash_pincode, total_points)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *
     `,
-        [chosenCompetitionId, userName, boulderAmount, hash_pincode]
+        [
+            chosenCompetitionId,
+            userName,
+            boulderAmount,
+            hash_pincode,
+            totalPoints,
+        ]
     );
 };
 
 module.exports.returnAllCompetitors = (competition_id) => {
     return db.query(
         `
-    SELECT competitor.id, competitor.competition_id, competitor.username, competitor.scoring FROM competitor
+    SELECT competitor.username, competitor.total_points FROM competitor
     WHERE competition_id = $1
     `,
         [competition_id]
@@ -62,7 +69,7 @@ module.exports.boulderAmount = (chosenCompetitionId) => {
 module.exports.getUserInfo = (userId) => {
     return db.query(
         `
-    SELECT competitions.compformat, competitions.compname, competitor.id, competitor.competition_id, competitor.username, competitor.scoring FROM competitor
+    SELECT competitions.compformat, competitions.compname, competitor.id, competitor.competition_id, competitor.username FROM competitor
  JOIN competitions
 on competitor.competition_id = competitions.id
 WHERE competitor.id = $1
@@ -81,15 +88,20 @@ module.exports.userScoring = (userId) => {
     );
 };
 
-module.exports.userUpdateScoring = (scoring, userId) => {
+module.exports.userUpdateScoring = (
+    scoring,
+    totalAmountOfScoreUser,
+    userId
+) => {
     return db.query(
         `
         UPDATE competitor
-        SET scoring = $1 
-        WHERE id = $2
-        RETURNING competitor.id
+        SET scoring = $1,
+            total_points = $2 
+        WHERE id = $3
+        RETURNING competitor.scoring
         `,
-        [scoring, userId]
+        [scoring, totalAmountOfScoreUser, userId]
     );
 };
 
@@ -125,4 +137,28 @@ module.exports.compFromId = (userId) => {
 };
 // selecting all users where the competition_id equels to the competition_id of the userId that i input
 
+// total_points van userId
+// rank van de user
+module.exports.pointsUser = (userId) => {
+    return db.query(
+        `
+        SELECT competitor.total_points
+        FROM competitor
+        WHERE id = $1
+        `,
+        [userId]
+    );
+};
 
+module.exports.rankUser = (competition_id) => {
+    return db.query(
+        `
+        SELECT competitor.username, competitor.total_points
+        FROM competitor
+        WHERE competition_id = $1
+        ORDER BY total_points DESC
+
+        `,
+        [competition_id]
+    );
+};

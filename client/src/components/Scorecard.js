@@ -1,64 +1,50 @@
 import Item from "./Item";
-import { fetchGet, fetchPost } from "../functions/functions";
-// import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { pointsClassic, totalPoints } from "../functions/rankingfunctions";
 
-export default function Scorecard({
-    // setScoreCardArray,
-    scoreCardArray,
-    id,
-}) {
-    const queryClient = useQueryClient();
-    console.log("queryClient: ", queryClient);
+export default function Scorecard() {
+    async function fetchArray() {
+        const res = await fetch(`/api/userarray`);
+        const { scoring } = await res.json();
+        return scoring;
+    }
 
-    const { isLoading, isError, data, error } = useQuery({
-        queryKey: [`userarray`],
-        queryFn: () => fetchGet(`/api/userarray`),
+    const {
+        data: scoring,
+        isLoading,
+        isError,
+        error,
+    } = useQuery({
+        queryKey: ["userarray"],
+        queryFn: fetchArray,
     });
 
-    const mutation = useMutation({
-        mutationFn: async (newData) => {
-            const stuff = await fetchPost(`/api/updateuserarray`, { newData, id });
-            console.log("stuff: ", stuff);
-            
+    async function updateArray(obj) {
+        const res = await fetch("/api/updateuserarray", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj),
+        });
+        const { scoring } = await res.json();
+        return scoring;
+    }
+
+    const queryClient = useQueryClient();
+
+    const { mutate } = useMutation({
+        mutationFn: updateArray,
+        onMutate: (obj) => {
+            const { newScoreCardArray, totalAmountOfScoreUser } = obj;
+            // queryClient.setQueryData([`userarray`], (old) => {
+            //     [...old, updatedArray];
+            // });
         },
-        onMutate: async (newData) => {
-            // console.log("newData: ", newData);
-            await queryClient.cancelQueries({ queryKey: [`userarray`] });
-
-            const previousData = queryClient.getQueriesData([`userarray`]);
-
-            console.log("previousData: ", previousData);
-            console.log("newData: ", newData);
-
-            queryClient.setQueryData([`userarray`], (oldData) =>  [...oldData,  newData,])
-            return { previousData };
-        },
-        onError: (err, newData, context) => {
-            console.log("context.previousData: ", context.previousData);
-
-            queryClient.setQueriesData([`userarray`], context.previousData);
-        },
-        onSettled: () => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`userarray`] });
         },
-        // onSuccess: (data) => {
-        //     console.log("succesfull mutation");
-        //     // queryClient.setQueryData(["userarray"], (oldQueryData) => {
-        //     //     console.log("going here");
-
-        //     //     return {
-        //     //         ...oldQueryData,
-        //     //         data: [oldQueryData.data, data.data],
-        //     //     };
-        //     // });
-        //     queryClient.invalidateQueries({ queryKey: ["userarray"] });
-        //     console.log("getting");
-
-        // },
     });
-    console.log("mutation: ", mutation);
-
     const scorecardUpdater = (array, i) => {
         const a = [...array];
         a[i]++;
@@ -68,10 +54,14 @@ export default function Scorecard({
         return a;
     };
 
-    const clickHandler = (idx) => {
-        const newScoreCardArray = scorecardUpdater(scoreCardArray, idx);
-        // console.log("newScoreCardArray: ", newScoreCardArray);
-        mutation.mutate(newScoreCardArray);
+    const clickHandler = async (idx) => {
+        const newScoreCardArray = scorecardUpdater(scoring, idx);
+        const totalAmountOfPointsUser = pointsClassic(newScoreCardArray);
+        const totalAmountOfScoreUser = await totalPoints(
+            totalAmountOfPointsUser
+        );
+        console.log("totalAmountOfScoreUser: ", totalAmountOfScoreUser);
+        mutate({ newScoreCardArray, totalAmountOfScoreUser });
     };
 
     if (isLoading) {
@@ -85,7 +75,7 @@ export default function Scorecard({
     return (
         <>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 xl:grid-cols-10">
-                {data.scoring.map((item, idx) => (
+                {scoring.map((item, idx) => (
                     <Item
                         clickHandler={clickHandler}
                         item={item}

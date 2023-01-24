@@ -33,19 +33,43 @@ app.use(compression());
 
 app.use(express.json());
 
+
+
 // ---------------------routing----------------//
+
+// api res => naam total_points
 app.get("/api/getallusers/:competition_id", async (req, res) => {
     console.log("GET /getallusers");
+    console.log("req.params.competition_id: ", req.params.competition_id);
+
     try {
         const { rows } = await db.returnAllCompetitors(
             req.params.competition_id
         );
+        console.log("rows: ", rows);
+
         res.json(rows);
     } catch {
         res.json({ success: false });
     }
 });
 
+// api totalpoints user + alle rankings name users best to worst
+app.get("/api/rankinfo", async (req, res) => {
+    console.log("GET /rankinfo");
+    try {
+        const { userId, competition_id } = req.session;
+
+        const { rows: points } = await db.pointsUser(userId);
+        const { rows: rank } = await db.rankUser(competition_id);
+
+        res.json({ points, rank });
+    } catch {
+        console.error();
+    }
+});
+
+// api scoring array of user
 app.get(`/api/userarray`, async (req, res) => {
     console.log("GET /userarray");
     try {
@@ -57,6 +81,7 @@ app.get(`/api/userarray`, async (req, res) => {
     }
 });
 
+// api check cookie of user
 app.get("/api/id.json", function (req, res) {
     console.log("GET /id.json");
     res.json({
@@ -64,10 +89,11 @@ app.get("/api/id.json", function (req, res) {
     });
 });
 
+// api for insert new competitions
 app.post("/api/newcomp", async (req, res) => {
     console.log("POST /createcomp");
     const { compName, boulderAmount, compFormat } = req.body;
-    console.log("req.body: ", req.body);
+
     try {
         const { rows } = await db.newComp(compName, boulderAmount, compFormat);
         res.json({ succes: true });
@@ -76,6 +102,8 @@ app.post("/api/newcomp", async (req, res) => {
     }
 });
 
+
+// api all competitions => change to date of comp
 app.get("/api/currentcomps", async (req, res) => {
     console.log("GET /currentcomps");
     try {
@@ -86,19 +114,26 @@ app.get("/api/currentcomps", async (req, res) => {
     }
 });
 
+
+// api update scorecard array
 app.post(`/api/updateuserarray`, async (req, res) => {
     console.log("POST /updateuserarray");
-    const { newData, id } = req.body;
-    console.log("req.body: ", req.body);
+    const { userId } = req.session;
+    const { newScoreCardArray, totalAmountOfScoreUser } = req.body;
 
     try {
-        await db.userUpdateScoring(newData, id);
-        res.json({ succes: true });
+        const { rows } = await db.userUpdateScoring(
+            newScoreCardArray,
+            totalAmountOfScoreUser,
+            userId
+        );
+        res.json(rows[0]);
     } catch {
         res.json({ succes: false });
     }
 });
 
+// api for a new user in db
 app.post("/api/newuser", async (req, res) => {
     console.log("POST /newuser");
     console.log("req.body: ", req.body);
@@ -120,17 +155,20 @@ app.post("/api/newuser", async (req, res) => {
             });
 
         if (!userExists) {
+            const totalPoints = 0;
             const hashedPassword = await hash(pinOne);
             await db
                 .newUser(
                     chosenCompetitionId,
                     userName,
                     boulderArray,
-                    hashedPassword
+                    hashedPassword,
+                    totalPoints
                 )
 
                 .then(({ rows }) => {
                     req.session.userId = rows[0].id;
+                    req.session.competition_id = rows[0].competition_id;
                     res.json({ success: true });
                 });
         } else {
@@ -141,6 +179,7 @@ app.post("/api/newuser", async (req, res) => {
     }
 });
 
+// api for exisiting user login 
 app.post("/api/userlogin", async (req, res) => {
     console.log("POST /login");
     const { userName, chosenCompetitionId, pinCode } = req.body;
@@ -164,6 +203,8 @@ app.post("/api/userlogin", async (req, res) => {
     }
 });
 
+
+// api for info of user
 app.get("/api/userinfo", function (req, res) {
     console.log("GET request /api/user");
     const { userId } = req.session;
@@ -172,6 +213,8 @@ app.get("/api/userinfo", function (req, res) {
     });
 });
 
+
+// api for all data of a certain competition
 app.get("/api/alldata", async function (req, res) {
     console.log("GET /api/alldata");
     const { userId } = req.session;
@@ -185,6 +228,8 @@ app.get("/api/alldata", async function (req, res) {
     res.json({ userObject, compDataArray });
 });
 
+
+// api for logout
 app.get("/api/logout", (req, res) => {
     console.log("GET /logout");
     req.session = null;
